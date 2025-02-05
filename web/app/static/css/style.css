@@ -1,4 +1,4 @@
-/* Fondo general suave con un toque romántico */
+/* Fuente global para toda la página */
 body {
   background-color: #f8f1f1; /* Rosa suave */
   font-family: 'Lora', serif; /* Fuente elegante y clásica */
@@ -51,28 +51,41 @@ aside {
   background-color: #f3d7e6; /* Rosa suave de fondo */
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Se elimina cualquier fuente específica para que herede la global 'Lora' */
 }
 
-.list-group-item {
+/* Título de la barra lateral */
+aside h4 {
+  font-family: inherit; /* Utiliza la misma fuente que el body (Lora) */
+  color: #f16c85; /* Color rosa romántico */
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Estilos para los items de la lista en la barra lateral */
+aside .list-group-item {
   cursor: pointer;
   padding: 10px 15px;
   font-size: 1.1em;
   transition: background-color 0.3s ease, color 0.3s ease;
   border-radius: 8px;
+  background-color: transparent; /* Se integra con el contenedor */
+  border: none;
 }
 
-.list-group-item.active {
+aside .list-group-item.active {
   background-color: #d197bc; /* Rosa suave y vibrante */
   color: white;
 }
 
-.list-group-item:hover {
+aside .list-group-item:hover {
   background-color: #f5c0d0; /* Rosa más suave al pasar el ratón */
 }
 
-/* Título principal con estilo romántico */
+/* Título principal con estilo romántico, utilizando la misma fuente que el resto */
 h1.romantic {
-  font-family: 'Dancing Script', cursive; /* Fuente cursiva y elegante */
+  font-family: inherit; /* Hereda 'Lora' definida en body */
   font-size: 2.5em;
   color: #f16c85; /* Rosa romántico */
   text-align: center;
@@ -97,23 +110,23 @@ h1.romantic {
 /* Responsividad para pantallas pequeñas */
 @media (max-width: 768px) {
   .card {
-      margin-bottom: 10px; /* Reducir el espacio en pantallas pequeñas */
+    margin-bottom: 10px; /* Reducir el espacio en pantallas pequeñas */
   }
 
   .img-container {
-      height: 200px; /* Ajustar el tamaño de la imagen en pantallas pequeñas */
+    height: 200px; /* Ajustar el tamaño de la imagen en pantallas pequeñas */
   }
 
   .img-fixed-height {
-      height: 150px;
+    height: 150px;
   }
 
   aside {
-      margin-bottom: 10px;
-      padding: 15px;
+    margin-bottom: 10px;
+    padding: 15px;
   }
 
   h1.romantic {
-      font-size: 2em; /* Reducir tamaño de título en pantallas pequeñas */
+    font-size: 2em; /* Reducir tamaño de título en pantallas pequeñas */
   }
 }

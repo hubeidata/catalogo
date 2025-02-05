@@ -2,34 +2,139 @@
 {% block content %}
   <h1 class="text-center romantic">Carrito de Compras</h1>
   {% if cart %}
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Producto</th>
-          <th>Precio</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for item in cart %}
+    <!-- Formulario para actualizar el carrito (cantidades y cupón) -->
+    <form method="post" action="{{ url_for('update_cart') }}">
+      <table class="table table-bordered">
+        <thead>
           <tr>
-            <td>{{ item['nombre'] }}</td>
-            <td>S/ {{ item['precio'] }}</td>
+            <th>Imagen</th>
+            <th>Producto</th>
+            <th>Precio Unitario</th>
+            <th>Cantidad</th>
+            <th>Subtotal</th>
+            <th>Acciones</th>
           </tr>
-        {% endfor %}
-        <tr>
-          <td><strong>Total</strong></td>
-          <td><strong>S/ {{ total }}</strong></td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="text-center">
-      <img src="{{ url_for('static', filename='imagenes/qr_code.png') }}" alt="Código QR" class="img-fluid" style="max-width:200px;">
+        </thead>
+        <tbody>
+          {% for item in cart %}
+            <tr data-item-id="{{ item['codigo'] }}">
+              <td>
+                <img src="{{ url_for('static', filename=item['imagen'] ~ '.jpeg') }}" alt="{{ item['nombre'] }}" class="img-fluid" style="max-width:100px;">
+              </td>
+              <td>{{ item['nombre'] }}</td>
+              <td>S/ {{ item['precio'] }}</td>
+              <td>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button class="btn btn-outline-secondary btn-decrease" type="button" data-item-id="{{ item['codigo'] }}">-</button>
+                  </div>
+                  <input type="text" name="quantity_{{ item['codigo'] }}" class="form-control text-center quantity-input" value="{{ item['cantidad'] }}" data-item-id="{{ item['codigo'] }}" style="max-width:50px;">
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary btn-increase" type="button" data-item-id="{{ item['codigo'] }}">+</button>
+                  </div>
+                </div>
+              </td>
+              <td>
+                S/ <span class="item-subtotal" data-item-id="{{ item['codigo'] }}">{{ (item['precio'] * item['cantidad']) | round(2) }}</span>
+              </td>
+              <td>
+                <button class="btn btn-danger btn-remove-item" type="button" data-item-id="{{ item['codigo'] }}">Eliminar</button>
+              </td>
+            </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="4" class="text-right"><strong>Total</strong></td>
+            <td colspan="2"><strong>S/ <span id="cart-total">{{ total | round(2) }}</span></strong></td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <div class="row">
+        <div class="col-md-6">
+          <!-- Sección para cupón de descuento opcional -->
+          <div class="form-group">
+            <label for="coupon">Código de Cupón:</label>
+            <input type="text" class="form-control" id="coupon" name="coupon" placeholder="Ingrese su cupón">
+          </div>
+        </div>
+        <div class="col-md-6 text-right">
+          <button type="submit" class="btn btn-primary">Actualizar Carrito</button>
+        </div>
+      </div>
+    </form>
+    
+    <div class="text-center mt-4">
+      <img src="{{ url_for('static', filename='imagenes/qr_code.jpg') }}" alt="Código QR" class="img-fluid" style="max-width:200px;">
       <p>Realice su pago vía Yape escaneando el código QR.</p>
-      <form method="post">
+      <form method="post" action="{{ url_for('confirm_payment') }}">
         <button type="submit" class="btn btn-success">He realizado el Yape</button>
       </form>
     </div>
+    
   {% else %}
     <p>El carrito está vacío.</p>
   {% endif %}
+  
+  <!-- JavaScript para las funcionalidades de cantidad, subtotal y eliminación -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      // Función para recalcular el subtotal de un item y el total del carrito
+      function updateSubtotal(itemId) {
+        const row = document.querySelector(`tr[data-item-id="${itemId}"]`);
+        const quantityInput = row.querySelector('input.quantity-input');
+        const priceText = row.querySelector('td:nth-child(3)').textContent;
+        // Extraer el precio numérico (asumiendo que el precio viene en el formato "S/ X")
+        const price = parseFloat(priceText.replace('S/','').trim());
+        const quantity = parseInt(quantityInput.value);
+        const newSubtotal = (price * quantity).toFixed(2);
+        row.querySelector('.item-subtotal').textContent = newSubtotal;
+        recalcTotal();
+      }
+      
+      // Función para recalcular el total del carrito
+      function recalcTotal() {
+        let total = 0;
+        document.querySelectorAll('.item-subtotal').forEach(elem => {
+          total += parseFloat(elem.textContent);
+        });
+        document.getElementById('cart-total').textContent = total.toFixed(2);
+      }
+      
+      // Aumentar cantidad
+      document.querySelectorAll('.btn-increase').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const itemId = this.getAttribute('data-item-id');
+          const input = document.querySelector(`input.quantity-input[data-item-id="${itemId}"]`);
+          input.value = parseInt(input.value) + 1;
+          updateSubtotal(itemId);
+        });
+      });
+      
+      // Disminuir cantidad (mínimo 1)
+      document.querySelectorAll('.btn-decrease').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const itemId = this.getAttribute('data-item-id');
+          const input = document.querySelector(`input.quantity-input[data-item-id="${itemId}"]`);
+          if (parseInt(input.value) > 1) {
+            input.value = parseInt(input.value) - 1;
+            updateSubtotal(itemId);
+          }
+        });
+      });
+      
+      // Eliminar item del carrito (este ejemplo elimina la fila; en la práctica se debería informar al servidor)
+      document.querySelectorAll('.btn-remove-item').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const itemId = this.getAttribute('data-item-id');
+          const row = document.querySelector(`tr[data-item-id="${itemId}"]`);
+          row.parentNode.removeChild(row);
+          recalcTotal();
+          // Opcional: realizar una llamada AJAX o redirigir para eliminar el item del carrito en el servidor.
+        });
+      });
+      
+    });
+  </script>
+  
 {% endblock %}

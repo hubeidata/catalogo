@@ -56,9 +56,8 @@ def index():
     conn = get_db_connection()
     productos = conn.execute('SELECT * FROM productos').fetchall()
     categorias = conn.execute('SELECT DISTINCT categoria FROM productos').fetchall()
-    
     conn.close()
-    # Convertimos la lista de categorías a un formato adecuado para la plantilla
+    # Convertir la lista de categorías a un formato adecuado para la plantilla
     categorias = [categoria['categoria'] for categoria in categorias]
     return render_template('index.html', productos=productos, categorias=categorias)
 
@@ -74,27 +73,73 @@ def add_to_cart(codigo):
     # Se utiliza la sesión para almacenar el carrito
     if 'cart' not in session:
         session['cart'] = []
-    # Convertimos el objeto sqlite3.Row a dict
+    # Convertir el objeto sqlite3.Row a dict y asignar cantidad inicial 1
     producto_dict = { key: producto[key] for key in producto.keys() }
+    producto_dict['cantidad'] = 1
     session['cart'].append(producto_dict)
     flash("Producto agregado al carrito.")
     return redirect(url_for('index'))
 
+@app.route('/update_cart', methods=['POST'])
+def update_cart():
+    """Actualiza las cantidades y aplica cupón en el carrito."""
+    cart = session.get('cart', [])
+    updated_cart = []
+    # Recorrer cada producto en el carrito y actualizar su cantidad
+    for item in cart:
+        codigo = item['codigo']
+        quantity_field = f'quantity_{codigo}'
+        if quantity_field in request.form:
+            try:
+                quantity = int(request.form[quantity_field])
+            except ValueError:
+                quantity = 1
+            if quantity < 1:
+                quantity = 1
+            item['cantidad'] = quantity
+            updated_cart.append(item)
+    session['cart'] = updated_cart
+
+    # Procesar cupón de descuento
+    coupon = request.form.get('coupon', '').strip()
+    if coupon:
+        # Ejemplo: cupón "DESCUENTO10" aplica un 10% de descuento
+        if coupon == "DESCUENTO10":
+            flash("Cupón aplicado: 10% de descuento")
+            session['coupon'] = coupon
+        else:
+            flash("Cupón inválido")
+            session.pop('coupon', None)
+    else:
+        session.pop('coupon', None)
+
+    flash("Carrito actualizado.")
+    return redirect(url_for('carrito'))
+
 @app.route('/carrito', methods=['GET', 'POST'])
 def carrito():
     """Muestra el carrito de compras y permite proceder a la confirmación de pago."""
+    # Si se envía el formulario de confirmación (por ejemplo, vía Yape), redirigir al checkout
     if request.method == 'POST':
-        # Redirige al formulario de checkout cuando el usuario indica que ya realizó el Yape.
         return redirect(url_for('checkout'))
     cart = session.get('cart', [])
-    total = sum(item['precio'] for item in cart)
+    # Calcular total: precio * cantidad
+    total = sum(item['precio'] * item.get('cantidad', 1) for item in cart)
+    # Aplicar cupón si existe y es válido
+    if 'coupon' in session and session['coupon'] == "DESCUENTO10":
+        total = total * 0.9
     return render_template('carrito.html', cart=cart, total=total)
+
+@app.route('/confirm_payment', methods=['POST'])
+def confirm_payment():
+    """Redirige al formulario de checkout tras la confirmación de pago vía Yape."""
+    return redirect(url_for('checkout'))
 
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     """Formulario para confirmar el pago y completar los datos del envío."""
     if request.method == 'POST':
-        # Procesamos los datos del formulario
+        # Procesar los datos del formulario
         data = {
             'codigo_transaccion': request.form['codigo_transaccion'],
             'nombre_cliente': request.form['nombre_cliente'],
@@ -105,7 +150,7 @@ def checkout():
             'direccion_envio': request.form['direccion_envio'],
             'captura_yape': request.files['captura_yape']
         }
-        # Guardamos la imagen subida (captura del Yape)
+        # Guardar la imagen subida (captura del Yape)
         upload_folder = os.path.join('static', 'uploads')
         if not os.path.exists(upload_folder):
             os.makedirs(upload_folder)
@@ -118,6 +163,7 @@ def checkout():
         
         flash("¡Pedido realizado con éxito!")
         session.pop('cart', None)  # Limpiar el carrito
+        session.pop('coupon', None)
         return redirect(url_for('index'))
     return render_template('checkout.html')
 

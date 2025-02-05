@@ -63,18 +63,26 @@ def index():
 
 @app.route('/add_to_cart/<codigo>')
 def add_to_cart(codigo):
-    """Agrega un producto al carrito usando el código único."""
     conn = get_db_connection()
     producto = conn.execute('SELECT * FROM productos WHERE codigo = ?', (codigo,)).fetchone()
     conn.close()
+    
     if producto is None:
         flash("Producto no encontrado.")
         return redirect(url_for('index'))
-    # Se utiliza la sesión para almacenar el carrito
+    
     if 'cart' not in session:
         session['cart'] = []
-    # Convertir el objeto sqlite3.Row a dict y asignar cantidad inicial 1
-    producto_dict = { key: producto[key] for key in producto.keys() }
+
+    # Buscar si el producto ya está en el carrito
+    for item in session['cart']:
+        if item['codigo'] == codigo:
+            item['cantidad'] += 1
+            flash("Cantidad del producto incrementada en el carrito.")
+            return redirect(url_for('index'))
+    
+    # Si no está en el carrito, agregarlo con cantidad 1
+    producto_dict = {key: producto[key] for key in producto.keys()}
     producto_dict['cantidad'] = 1
     session['cart'].append(producto_dict)
     flash("Producto agregado al carrito.")
@@ -82,10 +90,17 @@ def add_to_cart(codigo):
 
 @app.route('/update_cart', methods=['POST'])
 def update_cart():
-    """Actualiza las cantidades y aplica cupón en el carrito."""
     cart = session.get('cart', [])
+    # Si se ha enviado el botón "remove", eliminar el producto
+    if 'remove' in request.form:
+        codigo_a_eliminar = request.form['remove']
+        updated_cart = [item for item in cart if item.get('codigo') != codigo_a_eliminar]
+        session['cart'] = updated_cart
+        flash("Producto eliminado del carrito.")
+        return redirect(url_for('carrito'))
+    
+    # Si se ha enviado el botón de actualizar, procesar cantidades y cupón
     updated_cart = []
-    # Recorrer cada producto en el carrito y actualizar su cantidad
     for item in cart:
         codigo = item['codigo']
         quantity_field = f'quantity_{codigo}'
@@ -97,13 +112,12 @@ def update_cart():
             if quantity < 1:
                 quantity = 1
             item['cantidad'] = quantity
-            updated_cart.append(item)
+        updated_cart.append(item)
     session['cart'] = updated_cart
 
-    # Procesar cupón de descuento
+    # Procesar cupón de descuento (opcional)
     coupon = request.form.get('coupon', '').strip()
     if coupon:
-        # Ejemplo: cupón "DESCUENTO10" aplica un 10% de descuento
         if coupon == "DESCUENTO10":
             flash("Cupón aplicado: 10% de descuento")
             session['coupon'] = coupon
@@ -167,5 +181,17 @@ def checkout():
         return redirect(url_for('index'))
     return render_template('checkout.html')
 #inicio de la aplicación hola
+
+@app.route('/remove_from_cart/<codigo>', methods=['POST'])
+def remove_from_cart(codigo):
+    """Elimina un producto del carrito de compras."""
+    cart = session.get('cart', [])
+    # Filtrar el carrito para eliminar el producto con el código indicado
+    updated_cart = [item for item in cart if item.get('codigo') != codigo]
+    session['cart'] = updated_cart
+    flash("Producto eliminado del carrito.")
+    return redirect(url_for('carrito'))
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=True)

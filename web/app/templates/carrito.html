@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+
 {% block content %}
   <h1 class="text-center romantic">Carrito de Compras</h1>
   {% if cart %}
-    <!-- Formulario para actualizar el carrito (cantidades y cupón) -->
-    <form method="post" action="{{ url_for('update_cart') }}">
+    <!-- Un único formulario para actualizar el carrito y eliminar productos -->
+    <form action="{{ url_for('update_cart') }}" method="post">
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -19,7 +20,10 @@
           {% for item in cart %}
             <tr data-item-id="{{ item['codigo'] }}">
               <td>
-                <img src="{{ url_for('static', filename=item['imagen'] ~ '.jpeg') }}" alt="{{ item['nombre'] }}" class="img-fluid" style="max-width:100px;">
+                <img src="{{ url_for('static', filename=item['imagen'] ~ '.jpeg') }}"
+                     alt="{{ item['nombre'] }}"
+                     class="img-fluid"
+                     style="max-width:100px;">
               </td>
               <td>{{ item['nombre'] }}</td>
               <td>S/ {{ item['precio'] }}</td>
@@ -28,17 +32,26 @@
                   <div class="input-group-prepend">
                     <button class="btn btn-outline-secondary btn-decrease" type="button" data-item-id="{{ item['codigo'] }}">-</button>
                   </div>
-                  <input type="text" name="quantity_{{ item['codigo'] }}" class="form-control text-center quantity-input" value="{{ item['cantidad'] }}" data-item-id="{{ item['codigo'] }}" style="max-width:50px;">
+                  <input type="text"
+                         name="quantity_{{ item['codigo'] }}"
+                         class="form-control text-center quantity-input"
+                         value="{{ item.get('cantidad', 1) }}"
+                         data-item-id="{{ item['codigo'] }}"
+                         style="max-width:50px;">
                   <div class="input-group-append">
                     <button class="btn btn-outline-secondary btn-increase" type="button" data-item-id="{{ item['codigo'] }}">+</button>
                   </div>
                 </div>
               </td>
               <td>
-                S/ <span class="item-subtotal" data-item-id="{{ item['codigo'] }}">{{ (item['precio'] * item['cantidad']) | round(2) }}</span>
+                S/ <span class="item-subtotal" data-item-id="{{ item['codigo'] }}">
+                      {{ (item['precio'] * item.get('cantidad', 1)) | round(2) }}
+                    </span>
               </td>
               <td>
-                <button class="btn btn-danger btn-remove-item" type="button" data-item-id="{{ item['codigo'] }}">Eliminar</button>
+                <!-- Botón de eliminación dentro del mismo formulario.
+                     Al hacer clic, se enviará el nombre "remove" con el valor del código -->
+                <button class="btn btn-danger" type="submit" name="remove" value="{{ item['codigo'] }}">Eliminar</button>
               </td>
             </tr>
           {% endfor %}
@@ -49,24 +62,26 @@
         </tbody>
       </table>
       
+      <!-- Sección para ingresar un cupón de descuento -->
       <div class="row">
         <div class="col-md-6">
-          <!-- Sección para cupón de descuento opcional -->
           <div class="form-group">
             <label for="coupon">Código de Cupón:</label>
             <input type="text" class="form-control" id="coupon" name="coupon" placeholder="Ingrese su cupón">
           </div>
         </div>
         <div class="col-md-6 text-right">
-          <button type="submit" class="btn btn-primary">Actualizar Carrito</button>
+          <!-- Botón para actualizar cantidades y aplicar cupón -->
+          <button type="submit" class="btn btn-primary" name="update" value="update">Actualizar Carrito</button>
         </div>
       </div>
     </form>
     
+    <!-- Sección de pago vía Yape -->
     <div class="text-center mt-4">
       <img src="{{ url_for('static', filename='imagenes/qr_code.jpg') }}" alt="Código QR" class="img-fluid" style="max-width:200px;">
       <p>Realice su pago vía Yape escaneando el código QR.</p>
-      <form method="post" action="{{ url_for('confirm_payment') }}">
+      <form action="{{ url_for('confirm_payment') }}" method="post">
         <button type="submit" class="btn btn-success">He realizado el Yape</button>
       </form>
     </div>
@@ -75,16 +90,16 @@
     <p>El carrito está vacío.</p>
   {% endif %}
   
-  <!-- JavaScript para las funcionalidades de cantidad, subtotal y eliminación -->
+  <!-- JavaScript para actualizar cantidades y recalcular subtotales y total -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       
-      // Función para recalcular el subtotal de un item y el total del carrito
+      // Función para recalcular el subtotal de un ítem y el total del carrito
       function updateSubtotal(itemId) {
         const row = document.querySelector(`tr[data-item-id="${itemId}"]`);
         const quantityInput = row.querySelector('input.quantity-input');
         const priceText = row.querySelector('td:nth-child(3)').textContent;
-        // Extraer el precio numérico (asumiendo que el precio viene en el formato "S/ X")
+        // Extraer el precio numérico (asumiendo el formato "S/ X")
         const price = parseFloat(priceText.replace('S/','').trim());
         const quantity = parseInt(quantityInput.value);
         const newSubtotal = (price * quantity).toFixed(2);
@@ -95,13 +110,13 @@
       // Función para recalcular el total del carrito
       function recalcTotal() {
         let total = 0;
-        document.querySelectorAll('.item-subtotal').forEach(elem => {
+        document.querySelectorAll('.item-subtotal').forEach(function(elem) {
           total += parseFloat(elem.textContent);
         });
         document.getElementById('cart-total').textContent = total.toFixed(2);
       }
       
-      // Aumentar cantidad
+      // Incrementar cantidad
       document.querySelectorAll('.btn-increase').forEach(function(btn) {
         btn.addEventListener('click', function() {
           const itemId = this.getAttribute('data-item-id');
@@ -123,18 +138,6 @@
         });
       });
       
-      // Eliminar item del carrito (este ejemplo elimina la fila; en la práctica se debería informar al servidor)
-      document.querySelectorAll('.btn-remove-item').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          const itemId = this.getAttribute('data-item-id');
-          const row = document.querySelector(`tr[data-item-id="${itemId}"]`);
-          row.parentNode.removeChild(row);
-          recalcTotal();
-          // Opcional: realizar una llamada AJAX o redirigir para eliminar el item del carrito en el servidor.
-        });
-      });
-      
     });
   </script>
-  
 {% endblock %}

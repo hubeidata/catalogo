@@ -1,42 +1,119 @@
+/* Fondo general suave con un toque romántico */
 body {
-    background-color: rgba(248, 249, 250, 0.9);
-  }
-  
+  background-color: #f8f1f1; /* Rosa suave */
+  font-family: 'Lora', serif; /* Fuente elegante y clásica */
+  color: #4b4b4b; /* Gris suave para el texto */
+}
+
+/* Estilo de las tarjetas de productos */
+.card {
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  background-color: #ffffff; /* Blanco limpio */
+  border-radius: 12px; /* Bordes redondeados */
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más suave y sutil al pasar el ratón */
+}
+
+.img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  width: 100%;
+  overflow: hidden;
+  border-top-left-radius: 12px; /* Bordes redondeados en la parte superior de la imagen */
+  border-top-right-radius: 12px;
+  background-color: #f5e6e6; /* Fondo suave detrás de la imagen */
+}
+
+.img-container img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0; /* Bordes redondeados en la imagen */
+}
+
+.img-fixed-height {
+  height: 200px; /* Ajusta según sea necesario */
+  object-fit: cover;
+  width: 100%;
+}
+
+/* Estilo para la barra lateral (categorías) */
+aside {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #f3d7e6; /* Rosa suave de fondo */
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.list-group-item {
+  cursor: pointer;
+  padding: 10px 15px;
+  font-size: 1.1em;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 8px;
+}
+
+.list-group-item.active {
+  background-color: #d197bc; /* Rosa suave y vibrante */
+  color: white;
+}
+
+.list-group-item:hover {
+  background-color: #f5c0d0; /* Rosa más suave al pasar el ratón */
+}
+
+/* Título principal con estilo romántico */
+h1.romantic {
+  font-family: 'Dancing Script', cursive; /* Fuente cursiva y elegante */
+  font-size: 2.5em;
+  color: #f16c85; /* Rosa romántico */
+  text-align: center;
+  margin-bottom: 40px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil para destacar el título */
+}
+
+/* Estilos para los botones */
+.btn-danger {
+  background-color: #f16c85; /* Rosa romántico */
+  color: white;
+  border-radius: 20px; /* Bordes redondeados */
+  padding: 10px 20px;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #d1576f; /* Rosa más oscuro al pasar el ratón */
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
   .card {
-    border: none;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
+      margin-bottom: 10px; /* Reducir el espacio en pantallas pequeñas */
   }
+
   .img-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 250px;
-    width: 100%;
-    overflow: hidden;
-  }
-  
-  .img-container img {
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: contain;
+      height: 200px; /* Ajustar el tamaño de la imagen en pantallas pequeñas */
   }
 
   .img-fixed-height {
-    height: 200px; /* Ajusta según sea necesario */
-    object-fit: cover;
-    width: 100%;
+      height: 150px;
   }
-  
+
   aside {
-    margin-bottom: 20px;
+      margin-bottom: 10px;
+      padding: 15px;
   }
-  
-  .list-group-item {
-    cursor: pointer;
+
+  h1.romantic {
+      font-size: 2em; /* Reducir tamaño de título en pantallas pequeñas */
   }
-  
-  .list-group-item.active {
-    background-color: #dc3545;
-    color: white;
-  }
+}

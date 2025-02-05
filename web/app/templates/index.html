@@ -9,9 +9,7 @@
       <ul class="list-group">
         <li class="list-group-item active filtro" data-categoria="todos">Ver todos</li>
         {% for categoria in categorias %}
-          <li class="list-group-item filtro" data-categoria="{{ categoria }}">
-            {{ categoria|replace('_', ' ')|title }}
-          </li>
+          <li class="list-group-item filtro" data-categoria="{{ categoria }}">{{ categoria|replace('_', ' ')|title }}</li>
         {% endfor %}
       </ul>
     </aside>

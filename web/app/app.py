@@ -166,6 +166,6 @@ def checkout():
         session.pop('coupon', None)
         return redirect(url_for('index'))
     return render_template('checkout.html')
-
+#inicio de la aplicación
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=True)

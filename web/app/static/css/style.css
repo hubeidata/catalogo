@@ -1,0 +1,42 @@
+body {
+    background-color: rgba(248, 249, 250, 0.9);
+  }
+  
+  .card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  .img-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 250px;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .img-container img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
+
+  .img-fixed-height {
+    height: 200px; /* Ajusta según sea necesario */
+    object-fit: cover;
+    width: 100%;
+  }
+  
+  aside {
+    margin-bottom: 20px;
+  }
+  
+  .list-group-item {
+    cursor: pointer;
+  }
+  
+  .list-group-item.active {
+    background-color: #dc3545;
+    color: white;
+  }

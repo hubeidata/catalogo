@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1 class="text-center romantic">Confirmación de Pago y Envío</h1>
+  <form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label for="codigo_transaccion" class="form-label">Código de Transacción</label>
+      <input type="text" class="form-control" id="codigo_transaccion" name="codigo_transaccion" required>
+    </div>
+    <div class="mb-3">
+      <label for="nombre_cliente" class="form-label">Nombre del Cliente</label>
+      <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" required>
+    </div>
+    <div class="mb-3">
+      <label for="telefono_cliente" class="form-label">Teléfono del Cliente</label>
+      <input type="text" class="form-control" id="telefono_cliente" name="telefono_cliente" required>
+    </div>
+    <div class="mb-3">
+      <label for="ubicacion_envio" class="form-label">Ubicación de Envío</label>
+      <input type="text" class="form-control" id="ubicacion_envio" name="ubicacion_envio" required>
+      <div id="map" style="height: 300px; margin-top:10px;"></div>
+    </div>
+    <div class="mb-3">
+      <label for="nombre_receptor" class="form-label">Nombre de la Persona que Recibe</label>
+      <input type="text" class="form-control" id="nombre_receptor" name="nombre_receptor" required>
+    </div>
+    <div class="mb-3">
+      <label for="telefono_receptor" class="form-label">Teléfono de la Persona que Recibe</label>
+      <input type="text" class="form-control" id="telefono_receptor" name="telefono_receptor" required>
+    </div>
+    <div class="mb-3">
+      <label for="direccion_envio" class="form-label">Dirección de Envío</label>
+      <textarea class="form-control" id="direccion_envio" name="direccion_envio" rows="2" required></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="captura_yape" class="form-label">Adjuntar Captura de Pantalla del Yape</label>
+      <input type="file" class="form-control" id="captura_yape" name="captura_yape" accept="image/*" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Confirmar Pedido</button>
+  </form>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    function initMap() {
+      const defaultLocation = { lat: -12.0464, lng: -77.0428 }; // Ubicación por defecto (ej. Lima, Perú)
+      const map = new google.maps.Map(document.getElementById("map"), {
+        center: defaultLocation,
+        zoom: 13,
+      });
+      const marker = new google.maps.Marker({
+        position: defaultLocation,
+        map: map,
+        draggable: true,
+      });
+      // Al mover el marcador, se actualiza el campo de ubicación
+      google.maps.event.addListener(marker, 'dragend', function(event) {
+        document.getElementById('ubicacion_envio').value = event.latLng.lat() + ', ' + event.latLng.lng();
+      });
+    }
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
+{% endblock %}

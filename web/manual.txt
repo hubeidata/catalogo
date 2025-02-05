@@ -1,0 +1,7 @@
+todos los comandos dentro de la carpeta app
+docker build -t catalogo-san-valentin .
+#ejecutar en desarrollo
+docker run -d -p 5000:5000 -v ${PWD}:/app catalogo-san-valentin
+
+#ejectar en produccion
+docker run -d -p 5000:5000 catalogo-san-valentin

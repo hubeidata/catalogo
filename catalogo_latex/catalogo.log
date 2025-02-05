@@ -1,0 +1,837 @@
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2025.2.4)  4 FEB 2025 10:59
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex
+(c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+(C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2024/06/29 v1.4n Standard LaTeX document class
+(C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/base\size10.clo
+File: size10.clo 2024/06/29 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count196
+\c@section=\count197
+\c@subsection=\count198
+\c@subsubsection=\count199
+\c@paragraph=\count266
+\c@subparagraph=\count267
+\c@figure=\count268
+\c@table=\count269
+\abovecaptionskip=\skip49
+\belowcaptionskip=\skip50
+\bibindent=\dimen141
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphicx.sty
+Package: graphicx 2021/09/16 v1.2d Enhanced LaTeX Graphics (DPC,SPQR)
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks17
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/graphics\graphics.sty
+Package: graphics 2024/08/06 v1.4g Standard LaTeX Graphics (DPC,SPQR)
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/graphics\trig.sty
+Package: trig 2023/12/02 v1.11 sin cos tan (DPC)
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: pdftex.def on input line 106.
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\pdftex.def
+File: pdftex.def 2024/04/13 v1.2c Graphics/color driver for pdftex
+))
+\Gin@req@height=\dimen142
+\Gin@req@width=\dimen143
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/base\inputenc.sty
+Package: inputenc 2024/02/08 v1.3d Input encoding file
+\inpenc@prehook=\toks18
+\inpenc@posthook=\toks19
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+Package: xcolor 2024/09/29 v3.02 LaTeX color extensions (UK)
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.ltx)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1349.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1353.
+Package xcolor Info: Model `RGB' extended on input line 1365.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1367.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1371.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1372.
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/tcolorbox\tcolorbox.sty
+Package: tcolorbox 2024/10/22 version 6.4.1 text color boxes
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/pgf/frontendlayer\tikz.sty (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgf.sty (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfrcs.sty (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil-common.tex
+\pgfutil@everybye=\toks20
+\pgfutil@tempdima=\dimen144
+\pgfutil@tempdimb=\dimen145
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfutil-latex.def
+\pgfutil@abb=\box52
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfrcs.code.tex (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf\pgf.revision.tex)
+Package: pgfrcs 2023-01-15 v3.1.10 (3.1.10)
+))
+Package: pgf 2023-01-15 v3.1.10 (3.1.10)
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/pgf/basiclayer\pgfcore.sty (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/pgf/systemlayer\pgfsys.sty (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys.code.tex
+Package: pgfsys 2023-01-15 v3.1.10 (3.1.10)
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks21
+\pgfkeys@temptoks=\toks22
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeyslibraryfiltered.code.tex
+\pgfkeys@tmptoks=\toks23
+))
+\pgf@x=\dimen146
+\pgf@y=\dimen147
+\pgf@xa=\dimen148
+\pgf@ya=\dimen149
+\pgf@xb=\dimen150
+\pgf@yb=\dimen151
+\pgf@xc=\dimen152
+\pgf@yc=\dimen153
+\pgf@xd=\dimen154
+\pgf@yd=\dimen155
+\w@pgf@writea=\write3
+\r@pgf@reada=\read2
+\c@pgf@counta=\count270
+\c@pgf@countb=\count271
+\c@pgf@countc=\count272
+\c@pgf@countd=\count273
+\t@pgf@toka=\toks24
+\t@pgf@tokb=\toks25
+\t@pgf@tokc=\toks26
+\pgf@sys@id@count=\count274
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgf.cfg
+File: pgf.cfg 2023-01-15 v3.1.10 (3.1.10)
+)
+Driver file for pgf: pgfsys-pdftex.def
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys-pdftex.def
+File: pgfsys-pdftex.def 2023-01-15 v3.1.10 (3.1.10)
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsys-common-pdf.def
+File: pgfsys-common-pdf.def 2023-01-15 v3.1.10 (3.1.10)
+))) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfsyssoftpath@smallbuffer@items=\count275
+\pgfsyssoftpath@bigbuffer@items=\count276
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/systemlayer\pgfsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2023-01-15 v3.1.10 (3.1.10)
+)) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcore.code.tex
+Package: pgfcore 2023-01-15 v3.1.10 (3.1.10)
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code.tex (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathutil.code.tex) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathparser.code.tex
+\pgfmath@dimen=\dimen156
+\pgfmath@count=\count277
+\pgfmath@box=\box53
+\pgfmath@toks=\toks27
+\pgfmath@stack@operand=\toks28
+\pgfmath@stack@operation=\toks29
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.code.tex) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.basic.code.tex) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.trigonometric.code.tex) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.random.code.tex) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.comparison.code.tex) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.base.code.tex) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.round.code.tex) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.misc.code.tex) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfunctions.integerarithmetics.code.tex) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathcalc.code.tex) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count278
+)) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfint.code.tex) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepoints.code.tex
+File: pgfcorepoints.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@picminx=\dimen157
+\pgf@picmaxx=\dimen158
+\pgf@picminy=\dimen159
+\pgf@picmaxy=\dimen160
+\pgf@pathminx=\dimen161
+\pgf@pathmaxx=\dimen162
+\pgf@pathminy=\dimen163
+\pgf@pathmaxy=\dimen164
+\pgf@xx=\dimen165
+\pgf@xy=\dimen166
+\pgf@yx=\dimen167
+\pgf@yy=\dimen168
+\pgf@zx=\dimen169
+\pgf@zy=\dimen170
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathconstruct.code.tex
+File: pgfcorepathconstruct.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@path@lastx=\dimen171
+\pgf@path@lasty=\dimen172
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathusage.code.tex
+File: pgfcorepathusage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@shorten@end@additional=\dimen173
+\pgf@shorten@start@additional=\dimen174
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorescopes.code.tex
+File: pgfcorescopes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfpic=\box54
+\pgf@hbox=\box55
+\pgf@layerbox@main=\box56
+\pgf@picture@serial@count=\count279
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoregraphicstate.code.tex
+File: pgfcoregraphicstate.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgflinewidth=\dimen175
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoretransformations.code.tex
+File: pgfcoretransformations.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@pt@x=\dimen176
+\pgf@pt@y=\dimen177
+\pgf@pt@temp=\dimen178
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorequick.code.tex
+File: pgfcorequick.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreobjects.code.tex
+File: pgfcoreobjects.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepathprocessing.code.tex
+File: pgfcorepathprocessing.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorearrows.code.tex
+File: pgfcorearrows.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfarrowsep=\dimen179
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreshade.code.tex
+File: pgfcoreshade.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@max=\dimen180
+\pgf@sys@shading@range@num=\count280
+\pgf@shadingcount=\count281
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreimage.code.tex
+File: pgfcoreimage.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoreexternal.code.tex
+File: pgfcoreexternal.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfexternal@startupbox=\box57
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorelayers.code.tex
+File: pgfcorelayers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcoretransparency.code.tex
+File: pgfcoretransparency.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorepatterns.code.tex
+File: pgfcorepatterns.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/basiclayer\pgfcorerdf.code.tex
+File: pgfcorerdf.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmoduleshapes.code.tex
+File: pgfmoduleshapes.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfnodeparttextbox=\box58
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmoduleplot.code.tex
+File: pgfmoduleplot.code.tex 2023-01-15 v3.1.10 (3.1.10)
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfcomp-version-0-65.sty
+Package: pgfcomp-version-0-65 2023-01-15 v3.1.10 (3.1.10)
+\pgf@nodesepstart=\dimen181
+\pgf@nodesepend=\dimen182
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/pgf/compatibility\pgfcomp-version-1-18.sty
+Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
+)) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgffor.sty (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/pgf/utilities\pgfkeys.sty (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgfkeys.code.tex)) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/pgf/math\pgfmath.sty (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/math\pgfmath.code.tex)) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/utilities\pgffor.code.tex
+Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
+\pgffor@iter=\dimen183
+\pgffor@skip=\dimen184
+\pgffor@stack=\toks30
+\pgffor@toks=\toks31
+)) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz\tikz.code.tex
+Package: tikz 2023-01-15 v3.1.10 (3.1.10)
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/libraries\pgflibraryplothandlers.code.tex
+File: pgflibraryplothandlers.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgf@plot@mark@count=\count282
+\pgfplotmarksize=\dimen185
+)
+\tikz@lastx=\dimen186
+\tikz@lasty=\dimen187
+\tikz@lastxsaved=\dimen188
+\tikz@lastysaved=\dimen189
+\tikz@lastmovetox=\dimen190
+\tikz@lastmovetoy=\dimen191
+\tikzleveldistance=\dimen192
+\tikzsiblingdistance=\dimen193
+\tikz@figbox=\box59
+\tikz@figbox@bg=\box60
+\tikz@tempbox=\box61
+\tikz@tempbox@bg=\box62
+\tikztreelevel=\count283
+\tikznumberofchildren=\count284
+\tikznumberofcurrentchild=\count285
+\tikz@fig@count=\count286
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/modules\pgfmodulematrix.code.tex
+File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
+\pgfmatrixcurrentrow=\count287
+\pgfmatrixcurrentcolumn=\count288
+\pgf@matrix@numberofcolumns=\count289
+)
+\tikz@expandcount=\count290
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/pgf/frontendlayer/tikz/libraries\tikzlibrarytopaths.code.tex
+File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
+))) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/tools\verbatim.sty
+Package: verbatim 2024-01-22 v1.5x LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks32
+\verbatim@line=\toks33
+\verbatim@in@stream=\read3
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/environ\environ.sty
+Package: environ 2014/05/04 v0.3 A new way to define environments
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/trimspaces\trimspaces.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+)
+\@envbody=\toks34
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count291
+)
+\tcb@titlebox=\box63
+\tcb@upperbox=\box64
+\tcb@lowerbox=\box65
+\tcb@phantombox=\box66
+\c@tcbbreakpart=\count292
+\c@tcblayer=\count293
+\c@tcolorbox@number=\count294
+\l__tcobox_tmpa_box=\box67
+\l__tcobox_tmpa_dim=\dimen194
+\tcb@temp=\box68
+\tcb@temp=\box69
+\tcb@temp=\box70
+\tcb@temp=\box71
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2024/12/12 v1.0g TeX engine tests
+))
+\Gm@cnth=\count295
+\Gm@cntv=\count296
+\c@Gm@tempcnt=\count297
+\Gm@bindingoffset=\dimen195
+\Gm@wd@mp=\dimen196
+\Gm@odd@mp=\dimen197
+\Gm@even@mp=\dimen198
+\Gm@layoutwidth=\dimen199
+\Gm@layoutheight=\dimen256
+\Gm@layouthoffset=\dimen257
+\Gm@layoutvoffset=\dimen258
+\Gm@dimlist=\toks35
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg)) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def
+File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count298
+\l__pdf_internal_box=\box72
+)
+No file catalogo.aux.
+\openout1 = `catalogo.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+(C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count299
+\scratchdimen=\dimen259
+\scratchbox=\box73
+\nofMPsegments=\count300
+\nofMParguments=\count301
+\everyMPshowfont=\toks36
+\MPscratchCnt=\count302
+\MPscratchDim=\dimen260
+\MPnumerator=\count303
+\makeMPintoPDFobject=\count304
+\everyMPtoPDFconversion=\toks37
+) (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
+Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
+ (C:\Users\Hubei\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(56.9055pt, 500.484pt, 56.9055pt)
+* v-part:(T,H,B)=(56.9055pt, 681.15898pt, 56.9055pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=500.484pt
+* \textheight=681.15898pt
+* \oddsidemargin=-15.36449pt
+* \evensidemargin=-15.36449pt
+* \topmargin=-52.36449pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+
+LaTeX Warning: File `logo.png' not found on input line 18.
+
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:18: Package pdftex.def Error: File `logo.png' not found: using draft setting.
+
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.18 ...udegraphics[width=0.3\textwidth]{logo.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+
+[1
+
+{C:/Users/Hubei/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 21.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 21.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 21.
+
+
+LaTeX Warning: No \author given.
+
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:27: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.27     \textcolor{cpred}{\Huge ♥}
+                                      \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 35.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 35.
+<imagenes_extraidas/image_2_3.jpeg, id=10, 147.55125pt x 240.9pt>
+File: imagenes_extraidas/image_2_3.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_2_3.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_2_3.jpeg  used on input line 38.
+(pdftex.def)             Requested size: 175.17244pt x 286.00186pt.
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 23--41
+$[]$   $[]$
+ []
+
+<imagenes_extraidas/image_2_4.jpeg, id=11, 166.37157pt x 188.20313pt>
+File: imagenes_extraidas/image_2_4.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_2_4.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_2_4.jpeg  used on input line 47.
+(pdftex.def)             Requested size: 175.17244pt x 198.17047pt.
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:53: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.53     \textcolor{cpred}{\Huge ♥}
+                                      \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 45--63
+$[]$   $[]$
+ []
+
+
+
+[2 <./imagenes_extraidas/image_2_3.jpeg> <./imagenes_extraidas/image_2_4.jpeg>]
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:71: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.71     \textcolor{cpred}{\Huge ♥}
+                                      \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+<imagenes_extraidas/image_2_5.jpeg, id=20, 148.30406pt x 176.91093pt>
+File: imagenes_extraidas/image_2_5.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_2_5.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_2_5.jpeg  used on input line 82.
+(pdftex.def)             Requested size: 175.17244pt x 208.96904pt.
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 67--85
+$[]$   $[]$
+ []
+
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:93: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.93     \textcolor{cpred}{\Huge ♥}
+                                      \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+<imagenes_extraidas/image_5_3.jpeg, id=21, 180.675pt x 325.215pt>
+File: imagenes_extraidas/image_5_3.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_5_3.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_5_3.jpeg  used on input line 104.
+(pdftex.def)             Requested size: 175.17244pt x 315.31425pt.
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 89--107
+$[]$   $[]$
+ []
+
+<imagenes_extraidas/image_5_4.jpeg, id=22, 408.02437pt x 408.02437pt>
+File: imagenes_extraidas/image_5_4.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_5_4.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_5_4.jpeg  used on input line 113.
+(pdftex.def)             Requested size: 175.17244pt x 175.17311pt.
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:119: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.119     \textcolor{cpred}{\Huge ♥}
+                                       \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 111--129
+$[]$   $[]$
+ []
+
+
+
+[3 <./imagenes_extraidas/image_2_5.jpeg> <./imagenes_extraidas/image_5_3.jpeg>]
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:137: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.137     \textcolor{cpred}{\Huge ♥}
+                                       \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+<imagenes_extraidas/image_5_5.jpeg, id=26, 150.5625pt x 264.99pt>
+File: imagenes_extraidas/image_5_5.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_5_5.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_5_5.jpeg  used on input line 148.
+(pdftex.def)             Requested size: 175.17244pt x 308.33072pt.
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 133--151
+$[]$   $[]$
+ []
+
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:159: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.159     \textcolor{cpred}{\Huge ♥}
+                                       \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+<imagenes_extraidas/image_6_1.jpeg, id=27, 292.09125pt x 508.90125pt>
+File: imagenes_extraidas/image_6_1.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_6_1.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_6_1.jpeg  used on input line 170.
+(pdftex.def)             Requested size: 175.17244pt x 305.20332pt.
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 155--173
+$[]$   $[]$
+ []
+
+
+
+[4 <./imagenes_extraidas/image_5_4.jpeg> <./imagenes_extraidas/image_5_5.jpeg>]
+<imagenes_extraidas/image_6_2.jpeg, id=31, 341.77687pt x 521.69907pt>
+File: imagenes_extraidas/image_6_2.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_6_2.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_6_2.jpeg  used on input line 179.
+(pdftex.def)             Requested size: 175.17244pt x 267.3924pt.
+
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:185: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.185     \textcolor{cpred}{\Huge ♥}
+                                       \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 177--195
+$[]$   $[]$
+ []
+
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:203: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.203     \textcolor{cpred}{\Huge ♥}
+                                       \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+<imagenes_extraidas/image_7_4.jpeg, id=32, 239.39438pt x 439.6425pt>
+File: imagenes_extraidas/image_7_4.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_7_4.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_7_4.jpeg  used on input line 214.
+(pdftex.def)             Requested size: 175.17244pt x 321.70111pt.
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 199--217
+$[]$   $[]$
+ []
+
+
+
+[5 <./imagenes_extraidas/image_6_1.jpeg> <./imagenes_extraidas/image_6_2.jpeg>]
+<imagenes_extraidas/image_7_3.jpeg, id=36, 347.79938pt x 435.87843pt>
+File: imagenes_extraidas/image_7_3.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_7_3.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_7_3.jpeg  used on input line 223.
+(pdftex.def)             Requested size: 175.17244pt x 219.53491pt.
+
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:229: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.229     \textcolor{cpred}{\Huge ♥}
+                                       \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 221--239
+$[]$   $[]$
+ []
+
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:247: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.247     \textcolor{cpred}{\Huge ♥}
+                                       \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+<imagenes_extraidas/image_9_2.jpeg, id=37, 295.85532pt x 434.37282pt>
+File: imagenes_extraidas/image_9_2.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_9_2.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_9_2.jpeg  used on input line 258.
+(pdftex.def)             Requested size: 175.17244pt x 257.1924pt.
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 243--261
+$[]$   $[]$
+ []
+
+
+
+[6 <./imagenes_extraidas/image_7_4.jpeg> <./imagenes_extraidas/image_7_3.jpeg>]
+<imagenes_extraidas/image_9_5.jpeg, id=41, 299.61937pt x 533.74406pt>
+File: imagenes_extraidas/image_9_5.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_9_5.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_9_5.jpeg  used on input line 267.
+(pdftex.def)             Requested size: 175.17244pt x 312.05577pt.
+
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:273: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.273     \textcolor{cpred}{\Huge ♥}
+                                       \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 265--283
+$[]$   $[]$
+ []
+
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:291: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.291     \textcolor{cpred}{\Huge ♥}
+                                       \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+<imagenes_extraidas/image_10_3.jpeg, id=42, 328.22626pt x 370.38374pt>
+File: imagenes_extraidas/image_10_3.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_10_3.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_10_3.jpeg  used on input line 302.
+(pdftex.def)             Requested size: 175.17244pt x 197.67012pt.
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 287--305
+$[]$   $[]$
+ []
+
+
+
+[7 <./imagenes_extraidas/image_9_2.jpeg> <./imagenes_extraidas/image_9_5.jpeg>]
+<imagenes_extraidas/image_10_4.jpeg, id=47, 464.4853pt x 388.45125pt>
+File: imagenes_extraidas/image_10_4.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_10_4.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_10_4.jpeg  used on input line 311.
+(pdftex.def)             Requested size: 175.17244pt x 146.49867pt.
+
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:317: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.317     \textcolor{cpred}{\Huge ♥}
+                                       \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 309--327
+$[]$   $[]$
+ []
+
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:335: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.335     \textcolor{cpred}{\Huge ♥}
+                                       \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+<imagenes_extraidas/image_10_5.jpeg, id=48, 472.76625pt x 381.67593pt>
+File: imagenes_extraidas/image_10_5.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_10_5.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_10_5.jpeg  used on input line 346.
+(pdftex.def)             Requested size: 175.17244pt x 141.42172pt.
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 331--349
+$[]$   $[]$
+ []
+
+<imagenes_extraidas/image_11_3.jpeg, id=49, 452.4403pt x 337.26pt>
+File: imagenes_extraidas/image_11_3.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_11_3.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_11_3.jpeg  used on input line 355.
+(pdftex.def)             Requested size: 175.17244pt x 130.57367pt.
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:361: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.361     \textcolor{cpred}{\Huge ♥}
+                                       \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 353--371
+$[]$   $[]$
+ []
+
+
+
+[8 <./imagenes_extraidas/image_10_3.jpeg> <./imagenes_extraidas/image_10_4.jpeg> <./imagenes_extraidas/image_10_5.jpeg>]
+
+c:/Users/Hubei/Documents/catalogo/replica/catalogo.tex:379: LaTeX Error: Unicode character ♥ (U+2665)
+               not set up for use with LaTeX.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.379     \textcolor{cpred}{\Huge ♥}
+                                       \\
+You may provide a definition with
+\DeclareUnicodeCharacter 
+
+<imagenes_extraidas/image_11_4.jpeg, id=53, 213.79875pt x 166.37157pt>
+File: imagenes_extraidas/image_11_4.jpeg Graphic file (type jpg)
+<use imagenes_extraidas/image_11_4.jpeg>
+Package pdftex.def Info: imagenes_extraidas/image_11_4.jpeg  used on input line 390.
+(pdftex.def)             Requested size: 175.17244pt x 136.31384pt.
+
+Overfull \hbox (7.87906pt too wide) in paragraph at lines 375--393
+$[]$   $[]$
+ []
+
+
+
+[9 <./imagenes_extraidas/image_11_3.jpeg> <./imagenes_extraidas/image_11_4.jpeg>] (catalogo.aux)
+ ***********
+LaTeX2e <2024-11-01> patch level 2
+L3 programming layer <2025-01-18>
+ ***********
+ ) 
+Here is how much of TeX's memory you used:
+ 15045 strings out of 473529
+ 328270 string characters out of 5714774
+ 686951 words of memory out of 5000000
+ 38059 multiletter control sequences out of 15000+600000
+ 563942 words of font info for 53 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 98i,6n,101p,486b,236s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <C:\Users\Hubei\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1000.pk><C:/Users/Hubei/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/Hubei/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/Hubei/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/Hubei/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/Hubei/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/Hubei/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on catalogo.pdf (9 pages, 490464 bytes).
+PDF statistics:
+ 87 PDF objects out of 1000 (max. 8388607)
+ 0 named destinations out of 1000 (max. 500000)
+ 98 words of extra memory for PDF output out of 10000 (max. 10000000)
+

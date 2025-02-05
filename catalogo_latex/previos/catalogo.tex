@@ -1,0 +1,49 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel} % Soporte para español
+\usepackage{graphicx} % Para imágenes
+\usepackage{geometry} % Para márgenes
+\usepackage{setspace} % Para espaciado
+\usepackage{fancyhdr} % Para encabezados y pies de página
+\usepackage{xcolor} % Para colores
+\usepackage{background} % Para fondo
+\usepackage{fontspec} % Para fuentes personalizadas
+\usepackage{pgfornament} % Para decoraciones
+\usepackage{titling} % Para controlar el título
+\usepackage{multicol} % Agregar este paquete para usar multicols
+
+% Configuración de márgenes
+\geometry{a4paper, margin=2cm}
+
+% Configuración de encabezado y pie de página
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\textbf{\textcolor{red}{Catálogo de San Valentín 2025}}}
+\fancyfoot[C]{\textcolor{pink}{\thepage}}
+
+% Fuente más legible
+\renewcommand{\rmdefault}{ptm} % Cambia la fuente a Times New Roman (serif)
+\setlength{\parindent}{0pt} % Quita la sangría en los párrafos
+\setlength{\parskip}{1ex plus 0.5ex minus 0.5ex} % Espaciado entre párrafos
+
+\begin{document}
+
+% Título del catálogo con mayor espacio y mejor formato
+\begin{center}
+    \Huge\textbf{\textcolor{red}{Catálogo de San Valentín 2025}} \\[0.5cm]
+    \large\textit{\textcolor{pink}{Regalos y rosas para el día del amor y la amistad}} \\[1cm]
+    \pgfornament[width=0.5\linewidth, color=red]{88} % Decoración romántica
+\end{center}
+
+% Contenido del catálogo
+\input{contenido_generado.tex}
+
+% Pie de página decorativo con un toque más delicado
+\vspace{1cm}
+\begin{center}
+    \pgfornament[width=0.5\linewidth, color=pink]{88} % Decoración romántica
+    \\[0.5cm]
+    \textcolor{pink}{\small Con amor, para ti.}
+\end{center}
+
+\end{document}

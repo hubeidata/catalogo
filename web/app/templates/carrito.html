@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1 class="text-center romantic">Carrito de Compras</h1>
+  {% if cart %}
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in cart %}
+          <tr>
+            <td>{{ item['nombre'] }}</td>
+            <td>S/ {{ item['precio'] }}</td>
+          </tr>
+        {% endfor %}
+        <tr>
+          <td><strong>Total</strong></td>
+          <td><strong>S/ {{ total }}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="text-center">
+      <img src="{{ url_for('static', filename='imagenes/qr_code.png') }}" alt="Código QR" class="img-fluid" style="max-width:200px;">
+      <p>Realice su pago vía Yape escaneando el código QR.</p>
+      <form method="post">
+        <button type="submit" class="btn btn-success">He realizado el Yape</button>
+      </form>
+    </div>
+  {% else %}
+    <p>El carrito está vacío.</p>
+  {% endif %}
+{% endblock %}

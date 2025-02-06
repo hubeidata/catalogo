@@ -3,8 +3,8 @@
 {% block content %}
   <h1 class="text-center romantic">Carrito de Compras</h1>
   {% if cart %}
-    <!-- Un único formulario para actualizar el carrito y eliminar productos -->
-    <form action="{{ url_for('update_cart') }}" method="post">
+    <!-- Formulario para actualizar cantidades, cupón y eliminación de productos -->
+    <form action="{{ url_for('update_cart') }}" method="post" id="cartForm">
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -49,8 +49,7 @@
                     </span>
               </td>
               <td>
-                <!-- Botón de eliminación dentro del mismo formulario.
-                     Al hacer clic, se enviará el nombre "remove" con el valor del código -->
+                <!-- Botón para eliminar el producto mediante un formulario (parte del update general) -->
                 <button class="btn btn-danger" type="submit" name="remove" value="{{ item['codigo'] }}">Eliminar</button>
               </td>
             </tr>
@@ -62,7 +61,7 @@
         </tbody>
       </table>
       
-      <!-- Sección para ingresar un cupón de descuento -->
+      <!-- Sección para ingresar un cupón de descuento (opcional) -->
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
@@ -71,21 +70,43 @@
           </div>
         </div>
         <div class="col-md-6 text-right">
-          <!-- Botón para actualizar cantidades y aplicar cupón -->
-          <button type="submit" class="btn btn-primary" name="update" value="update">Actualizar Carrito</button>
+          <!-- Botón que abre el modal para proceder con el pago -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#paymentModal">
+            Proceder con el Pago
+          </button>
         </div>
       </div>
     </form>
     
-    <!-- Sección de pago vía Yape -->
-    <div class="text-center mt-4">
-      <img src="{{ url_for('static', filename='imagenes/qr_code.jpg') }}" alt="Código QR" class="img-fluid" style="max-width:200px;">
-      <p>Realice su pago vía Yape escaneando el código QR.</p>
-      <form action="{{ url_for('confirm_payment') }}" method="post">
-        <button type="submit" class="btn btn-success">He realizado el Yape</button>
-      </form>
+    <!-- Modal de Pago -->
+    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+             <h5 class="modal-title" id="paymentModalLabel">Proceder con el Pago</h5>
+             <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+               <span aria-hidden="true">&times;</span>
+             </button>
+          </div>
+          <div class="modal-body">
+             <!-- Información inicial de pago -->
+             <div id="paymentInfo">
+               <img src="{{ url_for('static', filename='imagenes/qr_code.jpg') }}"
+                    alt="Código QR"
+                    class="img-fluid mx-auto d-block"
+                    style="max-width:200px;">
+               <p class="text-center mt-3">Monto a depositar: S/ {{ total | round(2) }}</p>
+               <div class="text-center">
+                  <button type="button" class="btn btn-success" id="confirmPayment">He realizado el Yape</button>
+               </div>
+             </div>
+             <!-- Contenedor para el formulario de checkout, que se cargará vía AJAX -->
+             <div id="checkoutForm" style="display:none;"></div>
+          </div>
+        </div>
+      </div>
     </div>
-    
+  
   {% else %}
     <p>El carrito está vacío.</p>
   {% endif %}
@@ -93,13 +114,10 @@
   <!-- JavaScript para actualizar cantidades y recalcular subtotales y total -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      
-      // Función para recalcular el subtotal de un ítem y el total del carrito
       function updateSubtotal(itemId) {
         const row = document.querySelector(`tr[data-item-id="${itemId}"]`);
         const quantityInput = row.querySelector('input.quantity-input');
         const priceText = row.querySelector('td:nth-child(3)').textContent;
-        // Extraer el precio numérico (asumiendo el formato "S/ X")
         const price = parseFloat(priceText.replace('S/','').trim());
         const quantity = parseInt(quantityInput.value);
         const newSubtotal = (price * quantity).toFixed(2);
@@ -107,7 +125,6 @@
         recalcTotal();
       }
       
-      // Función para recalcular el total del carrito
       function recalcTotal() {
         let total = 0;
         document.querySelectorAll('.item-subtotal').forEach(function(elem) {
@@ -116,7 +133,6 @@
         document.getElementById('cart-total').textContent = total.toFixed(2);
       }
       
-      // Incrementar cantidad
       document.querySelectorAll('.btn-increase').forEach(function(btn) {
         btn.addEventListener('click', function() {
           const itemId = this.getAttribute('data-item-id');
@@ -126,7 +142,6 @@
         });
       });
       
-      // Disminuir cantidad (mínimo 1)
       document.querySelectorAll('.btn-decrease').forEach(function(btn) {
         btn.addEventListener('click', function() {
           const itemId = this.getAttribute('data-item-id');
@@ -137,7 +152,30 @@
           }
         });
       });
-      
+    });
+  </script>
+  
+  <!-- JavaScript para cargar el formulario de checkout en el modal -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      document.getElementById('confirmPayment').addEventListener('click', function(){
+          // Ocultar la información de pago inicial
+          document.getElementById('paymentInfo').style.display = 'none';
+          // Mostrar el contenedor del formulario de checkout y mostrar un mensaje de carga
+          document.getElementById('checkoutForm').style.display = 'block';
+          document.getElementById('checkoutForm').innerHTML = '<p>Cargando formulario de pago...</p>';
+          
+          // Realizar la petición AJAX para cargar el contenido de checkout (en modo parcial)
+          fetch("{{ url_for('checkout') }}?partial=1")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('checkoutForm').innerHTML = data;
+            })
+            .catch(error => {
+                document.getElementById('checkoutForm').innerHTML = '<p>Error al cargar el formulario.</p>';
+                console.error(error);
+            });
+      });
     });
   </script>
 {% endblock %}

@@ -2,47 +2,94 @@
 {% block content %}
   <h1 class="text-center romantic">Confirmación de Pago y Envío</h1>
   <form method="post" enctype="multipart/form-data">
-    <div class="mb-3">
-      <label for="codigo_transaccion" class="form-label">Código de Transacción</label>
-      <input type="text" class="form-control" id="codigo_transaccion" name="codigo_transaccion" required>
+    <div class="row">
+      <!-- Columna Izquierda: Formulario de Datos -->
+      <div class="col-md-6">
+        <div class="mb-3">
+          <label for="codigo_transaccion" class="form-label">Código de Transacción</label>
+          <input type="text" class="form-control" id="codigo_transaccion" name="codigo_transaccion" required>
+        </div>
+        <div class="mb-3">
+          <label for="nombre_cliente" class="form-label">Nombre del Cliente</label>
+          <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" required>
+        </div>
+        <div class="mb-3">
+          <label for="telefono_cliente" class="form-label">Teléfono del Cliente</label>
+          <input type="text" class="form-control" id="telefono_cliente" name="telefono_cliente" required>
+        </div>
+        <div class="mb-3">
+          <label for="ubicacion_envio" class="form-label">Ubicación de Envío</label>
+          <input type="text" class="form-control" id="ubicacion_envio" name="ubicacion_envio" required>
+          <div id="map" style="height: 300px; margin-top:10px;"></div>
+        </div>
+        <div class="mb-3">
+          <label for="nombre_receptor" class="form-label">Nombre de la Persona que Recibe</label>
+          <input type="text" class="form-control" id="nombre_receptor" name="nombre_receptor" required>
+        </div>
+        <div class="mb-3">
+          <label for="telefono_receptor" class="form-label">Teléfono de la Persona que Recibe</label>
+          <input type="text" class="form-control" id="telefono_receptor" name="telefono_receptor" required>
+        </div>
+        <div class="mb-3">
+          <label for="direccion_envio" class="form-label">Dirección de Envío</label>
+          <textarea class="form-control" id="direccion_envio" name="direccion_envio" rows="2" required></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="captura_yape" class="form-label">Adjuntar Captura de Pantalla del Yape</label>
+          <input type="file" class="form-control" id="captura_yape" name="captura_yape" accept="image/*" required>
+        </div>
+      </div>
+
+      <!-- Columna Derecha: Métodos de Pago y Resumen -->
+      <div class="col-md-6">
+        <!-- Métodos de Pago -->
+        <div class="mb-3">
+          <label class="form-label">Métodos de Pago</label>
+          <div class="form-check">
+            <input type="radio" class="form-check-input" id="pagoYape" name="metodo_pago" value="yape">
+            <label for="pagoYape" class="form-check-label">Pago por Yape</label>
+          </div>
+          <!-- Contenedor para la imagen del QR; se muestra al seleccionar Pago por Yape -->
+          <div id="qrContainer" style="display:none; margin-left: 20px; margin-top: 10px;">
+            <img src="{{ url_for('static', filename='imagenes/qr_code.jpg') }}" alt="QR Yape" class="img-fluid">
+          </div>
+          <div class="form-check mt-2">
+            <input type="radio" class="form-check-input" id="pagoTarjeta" name="metodo_pago" value="tarjeta" disabled>
+            <label for="pagoTarjeta" class="form-check-label">Pago con Tarjeta de Crédito</label>
+          </div>
+        </div>
+
+        <!-- Resumen del Pedido -->
+        <div class="mb-3">
+          <h3>Resumen</h3>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Subtotal</span>
+              <!-- Se utiliza la variable 'total' enviada desde el servidor -->
+              <strong>S/ <span id="resumenSubtotal">{{ total | round(2) }}</span></strong>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Gastos de Envío</span>
+              <strong>S/ 15.00</strong>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total</span>
+              <strong>S/ <span id="resumenTotal">{{ (total + 15) | round(2) }}</span></strong>
+            </li>
+          </ul>
+        </div>
+        <!-- Botón para confirmar el pedido -->
+        <button type="submit" class="btn btn-primary btn-block">Confirmar Pedido</button>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="nombre_cliente" class="form-label">Nombre del Cliente</label>
-      <input type="text" class="form-control" id="nombre_cliente" name="nombre_cliente" required>
-    </div>
-    <div class="mb-3">
-      <label for="telefono_cliente" class="form-label">Teléfono del Cliente</label>
-      <input type="text" class="form-control" id="telefono_cliente" name="telefono_cliente" required>
-    </div>
-    <div class="mb-3">
-      <label for="ubicacion_envio" class="form-label">Ubicación de Envío</label>
-      <input type="text" class="form-control" id="ubicacion_envio" name="ubicacion_envio" required>
-      <div id="map" style="height: 300px; margin-top:10px;"></div>
-    </div>
-    <div class="mb-3">
-      <label for="nombre_receptor" class="form-label">Nombre de la Persona que Recibe</label>
-      <input type="text" class="form-control" id="nombre_receptor" name="nombre_receptor" required>
-    </div>
-    <div class="mb-3">
-      <label for="telefono_receptor" class="form-label">Teléfono de la Persona que Recibe</label>
-      <input type="text" class="form-control" id="telefono_receptor" name="telefono_receptor" required>
-    </div>
-    <div class="mb-3">
-      <label for="direccion_envio" class="form-label">Dirección de Envío</label>
-      <textarea class="form-control" id="direccion_envio" name="direccion_envio" rows="2" required></textarea>
-    </div>
-    <div class="mb-3">
-      <label for="captura_yape" class="form-label">Adjuntar Captura de Pantalla del Yape</label>
-      <input type="file" class="form-control" id="captura_yape" name="captura_yape" accept="image/*" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Confirmar Pedido</button>
   </form>
 {% endblock %}
 
 {% block scripts %}
   <script>
+    // Inicialización del mapa de Google
     function initMap() {
-      const defaultLocation = { lat: -12.0464, lng: -77.0428 }; // Ubicación por defecto (ej. Lima, Perú)
+      const defaultLocation = { lat: -12.0464, lng: -77.0428 };
       const map = new google.maps.Map(document.getElementById("map"), {
         center: defaultLocation,
         zoom: 13,
@@ -52,11 +99,44 @@
         map: map,
         draggable: true,
       });
-      // Al mover el marcador, se actualiza el campo de ubicación
+      // Actualiza el campo de ubicación al mover el marcador
       google.maps.event.addListener(marker, 'dragend', function(event) {
         document.getElementById('ubicacion_envio').value = event.latLng.lat() + ', ' + event.latLng.lng();
       });
     }
+    window.initMap = initMap;
   </script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mostrar/ocultar imagen del QR al seleccionar "Pago por Yape"
+      const pagoYapeRadio = document.getElementById('pagoYape');
+      const qrContainer = document.getElementById('qrContainer');
+      
+      pagoYapeRadio.addEventListener('change', function() {
+        if (this.checked) {
+          qrContainer.style.display = 'block';
+        }
+      });
+      
+      // Aunque el radio de Tarjeta está deshabilitado, se incluye la lógica para ocultar el QR
+      const pagoTarjetaRadio = document.getElementById('pagoTarjeta');
+      pagoTarjetaRadio.addEventListener('change', function() {
+        if (this.checked) {
+          qrContainer.style.display = 'none';
+        }
+      });
+      
+      // Si se desea que al deseleccionar "Pago por Yape" se oculte el QR, se puede agregar:
+      const metodoPagoRadios = document.getElementsByName('metodo_pago');
+      metodoPagoRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+          if (!pagoYapeRadio.checked) {
+            qrContainer.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
 {% endblock %}

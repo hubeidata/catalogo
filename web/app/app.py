@@ -99,7 +99,7 @@ def update_cart():
         flash("Producto eliminado del carrito.")
         return redirect(url_for('carrito'))
     
-    # Si se ha enviado el botón de actualizar, procesar cantidades y cupón
+    # Si se ha enviado el formulario de actualización, procesar cantidades y cupón
     updated_cart = []
     for item in cart:
         codigo = item['codigo']
@@ -152,8 +152,8 @@ def confirm_payment():
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     """Formulario para confirmar el pago y completar los datos del envío."""
+    # Si es una solicitud POST, se procesan los datos del formulario de checkout.
     if request.method == 'POST':
-        # Procesar los datos del formulario
         data = {
             'codigo_transaccion': request.form['codigo_transaccion'],
             'nombre_cliente': request.form['nombre_cliente'],
@@ -179,8 +179,15 @@ def checkout():
         session.pop('cart', None)  # Limpiar el carrito
         session.pop('coupon', None)
         return redirect(url_for('index'))
-    return render_template('checkout.html')
-#inicio de la aplicación hola
+    else:
+        # Para solicitudes GET, calcular el total del carrito y pasarlo a la plantilla
+        cart = session.get('cart', [])
+        total = sum(item['precio'] * item.get('cantidad', 1) for item in cart)
+        if 'coupon' in session and session['coupon'] == "DESCUENTO10":
+            total = total * 0.9
+        # Si se utiliza AJAX y se pasa el parámetro "partial", se podría renderizar
+        # una versión parcial de checkout.html. En este ejemplo se renderiza la misma plantilla.
+        return render_template('checkout.html', total=total)
 
 @app.route('/remove_from_cart/<codigo>', methods=['POST'])
 def remove_from_cart(codigo):
@@ -191,7 +198,6 @@ def remove_from_cart(codigo):
     session['cart'] = updated_cart
     flash("Producto eliminado del carrito.")
     return redirect(url_for('carrito'))
-
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=True)

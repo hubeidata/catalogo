@@ -70,34 +70,13 @@
           </div>
         </div>
         <div class="col-md-6 text-right">
-          <!-- Botón que abre el modal para proceder con el pago -->
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#paymentModal">
+          <!-- Enlace que redirige a checkout.html -->
+          <a href="{{ url_for('checkout') }}" class="btn btn-primary">
             Proceder con el Pago
-          </button>
+          </a>
         </div>
       </div>
     </form>
-    
-    <!-- Modal de Pago: aquí se cargará checkout.html vía AJAX -->
-    <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-             <h5 class="modal-title" id="paymentModalLabel">Proceder con el Pago</h5>
-             <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-               <span aria-hidden="true">&times;</span>
-             </button>
-          </div>
-          <!-- El contenido del checkout se carga en el body del modal -->
-          <div class="modal-body">
-             <div id="checkoutForm">
-                <p class="text-center">Cargando formulario de pago...</p>
-             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  
   {% else %}
     <p>El carrito está vacío.</p>
   {% endif %}
@@ -142,31 +121,6 @@
             updateSubtotal(itemId);
           }
         });
-      });
-    });
-  </script>
-  
-  <!-- JavaScript para cargar checkout.html en el modal -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Cuando el modal se muestra, se carga el contenido del checkout
-      $('#paymentModal').on('shown.bs.modal', function () {
-        const checkoutContainer = document.getElementById('checkoutForm');
-        checkoutContainer.innerHTML = '<p class="text-center">Cargando formulario de pago...</p>';
-        fetch("{{ url_for('checkout') }}?partial=1")
-          .then(response => response.text())
-          .then(data => {
-              checkoutContainer.innerHTML = data;
-          })
-          .catch(error => {
-              checkoutContainer.innerHTML = '<p>Error al cargar el formulario.</p>';
-              console.error(error);
-          });
-      });
-      
-      // Opcional: limpiar el contenido cuando se cierra el modal
-      $('#paymentModal').on('hidden.bs.modal', function () {
-        document.getElementById('checkoutForm').innerHTML = '';
       });
     });
   </script>

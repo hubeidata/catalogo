@@ -2,6 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import json
 import sqlite3
 import os
+from datetime import datetime  # Importamos datetime para trabajar con fechas
+from send_order_email import send_order_email  # Asegúrate de que send_order_email.py esté en el mismo directorio o en el PYTHONPATH
+
 
 app = Flask(__name__)
 app.secret_key = 'tu_clave_secreta'  # Cambia este valor
@@ -152,42 +155,88 @@ def confirm_payment():
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     """Formulario para confirmar el pago y completar los datos del envío."""
-    # Si es una solicitud POST, se procesan los datos del formulario de checkout.
     if request.method == 'POST':
+        # Recopilar los datos del formulario, incluyendo el nuevo campo de correo electrónico
         data = {
             'codigo_transaccion': request.form['codigo_transaccion'],
             'nombre_cliente': request.form['nombre_cliente'],
             'telefono_cliente': request.form['telefono_cliente'],
+            'correo_cliente': request.form['correo_cliente'],  # Nuevo campo
             'ubicacion_envio': request.form['ubicacion_envio'],
             'nombre_receptor': request.form['nombre_receptor'],
             'telefono_receptor': request.form['telefono_receptor'],
             'direccion_envio': request.form['direccion_envio'],
-            'captura_yape': request.files['captura_yape']
+            'fecha_envio': request.form['fecha_envio'],
+            'captura_yape': request.files['captura_yape'].filename
         }
-        # Guardar la imagen subida (captura del Yape)
+        
+        # Guardar la imagen subida en la carpeta static/uploads/
         upload_folder = os.path.join('static', 'uploads')
         if not os.path.exists(upload_folder):
             os.makedirs(upload_folder)
-        file = data['captura_yape']
+        file = request.files['captura_yape']
         filename = file.filename
         filepath = os.path.join(upload_folder, filename)
         file.save(filepath)
+        data['captura_yape_path'] = filename  # Se guarda la ruta relativa (se unirá con static/uploads/ en send_order_email)
         
-        # Aquí se podrían almacenar los datos del pedido en la base de datos o enviarlos por correo
+        # Enviar el correo de pedido a los operadores (ya implementado en send_order_email)
+        # Se asume que send_order_email ya envía el correo a rodety@gmail.com y fortydata@gmail.com.
+        from send_order_email import send_order_email
+        order_code = send_order_email(data)
+        
+        # Enviar acuse de recibo de confirmación de pago al cliente
+        import smtplib
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+        from email.header import Header
+
+        # Preparar asunto y cuerpo del correo para el cliente
+        confirmation_subject = Header(f"Acuse de Recibo - Pedido {order_code}", 'utf-8')
+        confirmation_body = f"""
+        <html>
+          <head><meta charset="UTF-8"></head>
+          <body>
+            <p>Estimado/a {data.get('nombre_cliente')},</p>
+            <p>Se recibió el pago y se procede a realizar el envío de su compra con los siguientes datos de envío:</p>
+            <p><strong>Dirección de Envío:</strong> {data.get('direccion_envio')}</p>
+            <p>Si desea cambiar o corregir alguno de los datos, por favor responda a este correo.</p>
+            <p>Gracias por su compra.</p>
+          </body>
+        </html>
+        """
+        customer_email = data.get('correo_cliente')
+        msg = MIMEMultipart("alternative")
+        msg['From'] = "hubeidata@gmail.com"
+        msg['To'] = customer_email
+        msg['Subject'] = confirmation_subject
+        msg.attach(MIMEText(confirmation_body, 'html', 'utf-8'))
+        
+        try:
+            smtp_server = "smtp.gmail.com"
+            smtp_port = 587
+            server = smtplib.SMTP(smtp_server, smtp_port)
+            server.starttls()
+            server.login("hubeidata@gmail.com", "TU_CONTRASEÑA_DE_APLICACION")
+            server.sendmail("hubeidata@gmail.com", [customer_email], msg.as_string().encode('utf-8'))
+            server.quit()
+            print("Acuse de recibo enviado al cliente.")
+        except Exception as e:
+            print("Error al enviar el acuse de recibo al cliente:", e)
         
         flash("¡Pedido realizado con éxito!")
         session.pop('cart', None)  # Limpiar el carrito
         session.pop('coupon', None)
         return redirect(url_for('index'))
     else:
-        # Para solicitudes GET, calcular el total del carrito y pasarlo a la plantilla
         cart = session.get('cart', [])
         total = sum(item['precio'] * item.get('cantidad', 1) for item in cart)
         if 'coupon' in session and session['coupon'] == "DESCUENTO10":
             total = total * 0.9
-        # Si se utiliza AJAX y se pasa el parámetro "partial", se podría renderizar
-        # una versión parcial de checkout.html. En este ejemplo se renderiza la misma plantilla.
-        return render_template('checkout.html', total=total)
+        from datetime import datetime
+        fecha_hoy = datetime.today().strftime("%Y-%m-%d")
+        return render_template('checkout.html', total=total, fecha_hoy=fecha_hoy)
+
 
 @app.route('/remove_from_cart/<codigo>', methods=['POST'])
 def remove_from_cart(codigo):
@@ -198,6 +247,8 @@ def remove_from_cart(codigo):
     session['cart'] = updated_cart
     flash("Producto eliminado del carrito.")
     return redirect(url_for('carrito'))
+
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=True)

@@ -1,13 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
   <h1 class="text-center romantic">Confirmación de Pago y Envío</h1>
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" id="checkoutForm">
     <div class="row">
       <!-- Columna Izquierda: Formulario de Datos -->
       <div class="col-md-6">
+        <!-- Código de Transacción con ayuda -->
         <div class="mb-3">
           <label for="codigo_transaccion" class="form-label">Código de Transacción</label>
-          <input type="text" class="form-control" id="codigo_transaccion" name="codigo_transaccion" required>
+          <div class="input-group">
+            <input type="text" class="form-control" id="codigo_transaccion" name="codigo_transaccion" required>
+            <span class="input-group-text" id="helpIcon" style="cursor: pointer;">?</span>
+          </div>
+          <!-- Contenedor de la imagen de ayuda, inicialmente oculta -->
+          <div id="helpImageContainer" style="display: none; margin-top: 5px;">
+            <img src="{{ url_for('static', filename='imagenes/yape.jpeg') }}" alt="Ayuda Código de Transacción" style="max-width: 100px;">
+          </div>
         </div>
         <div class="mb-3">
           <label for="nombre_cliente" class="form-label">Nombre del Cliente</label>
@@ -18,7 +26,12 @@
           <input type="text" class="form-control" id="telefono_cliente" name="telefono_cliente" required>
         </div>
         <div class="mb-3">
+          <label for="correo_cliente" class="form-label">Correo Electrónico del Cliente</label>
+          <input type="email" class="form-control" id="correo_cliente" name="correo_cliente" required>
+        </div>
+        <div class="mb-3">
           <label for="ubicacion_envio" class="form-label">Ubicación de Envío</label>
+          <!-- Este campo se actualizará automáticamente con un enlace a Google Maps y se deshabilitará para edición -->
           <input type="text" class="form-control" id="ubicacion_envio" name="ubicacion_envio" required>
           <div id="map" style="height: 300px; margin-top:10px;"></div>
         </div>
@@ -34,13 +47,18 @@
           <label for="direccion_envio" class="form-label">Dirección de Envío</label>
           <textarea class="form-control" id="direccion_envio" name="direccion_envio" rows="2" required></textarea>
         </div>
+        <!-- Campo para la Fecha de Envío -->
+        <div class="mb-3">
+          <label for="fecha_envio" class="form-label">Fecha de Envío</label>
+          <input type="date" class="form-control" id="fecha_envio" name="fecha_envio"
+                 value="{{ fecha_hoy }}" min="{{ fecha_hoy }}" required>
+        </div>
         <div class="mb-3">
           <label for="captura_yape" class="form-label">Adjuntar Captura de Pantalla del Yape</label>
           <input type="file" class="form-control" id="captura_yape" name="captura_yape" accept="image/*" required>
         </div>
       </div>
-
-      <!-- Columna Derecha: Métodos de Pago y Resumen -->
+      <!-- Columna Derecha: Métodos de Pago, Cupón y Resumen -->
       <div class="col-md-6">
         <!-- Métodos de Pago -->
         <div class="mb-3">
@@ -49,28 +67,43 @@
             <input type="radio" class="form-check-input" id="pagoYape" name="metodo_pago" value="yape">
             <label for="pagoYape" class="form-check-label">Pago por Yape</label>
           </div>
-          <!-- Contenedor para la imagen del QR; se muestra al seleccionar Pago por Yape -->
+          <!-- Contenedor del QR con botón de cerrar -->
           <div id="qrContainer" style="display:none; margin-left: 20px; margin-top: 10px;">
             <img src="{{ url_for('static', filename='imagenes/qr_code.jpg') }}" alt="QR Yape" class="img-fluid">
+            <button id="closeQR" type="button" class="btn btn-secondary btn-sm mt-2">Cerrar</button>
           </div>
           <div class="form-check mt-2">
-            <input type="radio" class="form-check-input" id="pagoTarjeta" name="metodo_pago" value="tarjeta" disabled>
+            <input type="radio" class="form-check-input" id="pagoTarjeta" name="metodo_pago" value="tarjeta">
             <label for="pagoTarjeta" class="form-check-label">Pago con Tarjeta de Crédito</label>
           </div>
+          <!-- Contenedor del mensaje con botón de cerrar -->
+          <div id="mensajeTarjeta" style="display:none; color: red; margin-left: 20px; font-weight: bold;">
+            Servicio no implementado
+            <button id="closeTarjeta" type="button" class="btn btn-secondary btn-sm mt-2">Cerrar</button>
+          </div>
         </div>
-
-        <!-- Resumen del Pedido -->
+        <!-- Cupón de Descuento (opcional) -->
+        <div class="mb-3">
+          <label for="coupon_code" class="form-label">Código de Descuento</label>
+          <input type="text" class="form-control" id="coupon_code" name="coupon_code">
+          <button type="button" id="applyCoupon" class="btn btn-danger mt-2">Aplicar descuento</button>
+        </div>
+        <!-- Resumen -->
         <div class="mb-3">
           <h3>Resumen</h3>
           <ul class="list-group mb-3">
             <li class="list-group-item d-flex justify-content-between">
               <span>Subtotal</span>
-              <!-- Se utiliza la variable 'total' enviada desde el servidor -->
               <strong>S/ <span id="resumenSubtotal">{{ total | round(2) }}</span></strong>
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <span>Gastos de Envío</span>
-              <strong>S/ 15.00</strong>
+              <strong>S/ <span id="shippingCost">15.00</span></strong>
+            </li>
+            <!-- Línea para el descuento por cupón; aparece solo si se aplica un código válido -->
+            <li class="list-group-item d-flex justify-content-between" id="couponDiscountContainer" style="display: none;">
+              <span>Descuento por cupón</span>
+              <strong style="color: red;">- S/ <span id="couponDiscount">0.00</span></strong>
             </li>
             <li class="list-group-item d-flex justify-content-between">
               <span>Total</span>
@@ -78,7 +111,6 @@
             </li>
           </ul>
         </div>
-        <!-- Botón para confirmar el pedido -->
         <button type="submit" class="btn btn-primary btn-block">Confirmar Pedido</button>
       </div>
     </div>
@@ -87,56 +119,258 @@
 
 {% block scripts %}
   <script>
-    // Inicialización del mapa de Google
-    function initMap() {
-      const defaultLocation = { lat: -12.0464, lng: -77.0428 };
-      const map = new google.maps.Map(document.getElementById("map"), {
-        center: defaultLocation,
-        zoom: 13,
-      });
-      const marker = new google.maps.Marker({
-        position: defaultLocation,
-        map: map,
-        draggable: true,
-      });
-      // Actualiza el campo de ubicación al mover el marcador
-      google.maps.event.addListener(marker, 'dragend', function(event) {
-        document.getElementById('ubicacion_envio').value = event.latLng.lat() + ', ' + event.latLng.lng();
-      });
-    }
-    window.initMap = initMap;
-  </script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
+    // Variable global para almacenar el descuento aplicado al costo de envío
+    let currentCouponDiscount = 0;
 
-  <script>
+    // Función para recalcular el total considerando: subtotal + envío – descuento
+    function updateTotal() {
+      const subtotal = parseFloat(document.getElementById("resumenSubtotal").innerText);
+      let shippingCost = parseFloat(document.getElementById("shippingCost").innerText);
+
+      // Si el descuento supera el costo de envío, se limita al valor del envío
+      if (currentCouponDiscount > shippingCost) {
+        currentCouponDiscount = shippingCost;
+      }
+
+      // Actualiza la visualización del descuento por cupón
+      const couponDiscountContainer = document.getElementById("couponDiscountContainer");
+      const couponDiscountEl = document.getElementById("couponDiscount");
+      if (currentCouponDiscount > 0) {
+        couponDiscountEl.innerText = currentCouponDiscount.toFixed(2);
+        couponDiscountContainer.style.display = "flex";
+      } else {
+        couponDiscountContainer.style.display = "none";
+      }
+
+      // Nuevo total = subtotal + envío – descuento
+      const newTotal = (subtotal + shippingCost - currentCouponDiscount).toFixed(2);
+      document.getElementById("resumenTotal").innerText = newTotal;
+    }
+
+    // --- Eventos que se disparan cuando el DOM está completamente cargado ---
     document.addEventListener('DOMContentLoaded', function() {
-      // Mostrar/ocultar imagen del QR al seleccionar "Pago por Yape"
+      // --- Métodos de Pago ---
       const pagoYapeRadio = document.getElementById('pagoYape');
       const qrContainer = document.getElementById('qrContainer');
-      
-      pagoYapeRadio.addEventListener('change', function() {
-        if (this.checked) {
-          qrContainer.style.display = 'block';
-        }
-      });
-      
-      // Aunque el radio de Tarjeta está deshabilitado, se incluye la lógica para ocultar el QR
+      const closeQR = document.getElementById('closeQR');
       const pagoTarjetaRadio = document.getElementById('pagoTarjeta');
-      pagoTarjetaRadio.addEventListener('change', function() {
-        if (this.checked) {
-          qrContainer.style.display = 'none';
+      const mensajeTarjeta = document.getElementById('mensajeTarjeta');
+      const closeTarjeta = document.getElementById('closeTarjeta');
+
+      pagoYapeRadio.addEventListener('click', function() {
+        qrContainer.style.display = 'block';
+        mensajeTarjeta.style.display = 'none';
+      });
+
+      pagoTarjetaRadio.addEventListener('click', function() {
+        mensajeTarjeta.style.display = 'block';
+        qrContainer.style.display = 'none';
+      });
+
+      closeQR.addEventListener('click', function() {
+        qrContainer.style.display = 'none';
+        pagoYapeRadio.checked = false;
+      });
+
+      closeTarjeta.addEventListener('click', function() {
+        mensajeTarjeta.style.display = 'none';
+        pagoTarjetaRadio.checked = false;
+      });
+
+      // --- Cupón de Descuento ---
+      const applyCouponBtn = document.getElementById('applyCoupon');
+      applyCouponBtn.addEventListener('click', function() {
+        const couponInput = document.getElementById('coupon_code');
+        const couponCode = couponInput.value.trim();
+        // Se obtendrá el costo de envío actual (ya calculado previamente)
+        const shippingCost = parseFloat(document.getElementById("shippingCost").innerText);
+
+        // Se aceptan los códigos: VALENTIN25 y ANYALUA442
+        if (couponCode.toUpperCase() === "VALENTIN25" || couponCode.toUpperCase() === "ANYALUA442") {
+          if(couponCode.toUpperCase() === "VALENTIN25") {
+            currentCouponDiscount = shippingCost * 1.0;
+          } else {
+            currentCouponDiscount = shippingCost * 1.0;
+          }
+          updateTotal();
+          // Se deshabilita el campo para evitar reaplicación
+          couponInput.readOnly = true;
+          couponInput.style.backgroundColor = "#e9ecef";
+        } else {
+          alert("El código de descuento ingresado no es válido.");
         }
       });
-      
-      // Si se desea que al deseleccionar "Pago por Yape" se oculte el QR, se puede agregar:
-      const metodoPagoRadios = document.getElementsByName('metodo_pago');
-      metodoPagoRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-          if (!pagoYapeRadio.checked) {
-            qrContainer.style.display = 'none';
-          }
+
+      // --- Ayuda para el Código de Transacción ---
+      const helpIcon = document.getElementById('helpIcon');
+      if (helpIcon) {
+        helpIcon.addEventListener('click', function() {
+          const helpImageContainer = document.getElementById('helpImageContainer');
+          // Alterna la visibilidad de la imagen de ayuda
+          helpImageContainer.style.display = (helpImageContainer.style.display === 'none' || helpImageContainer.style.display === '') ? 'block' : 'none';
         });
+      }
+
+      // --- Validación del Formulario al Enviar (Confirmar Pedido) ---
+      document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        let valid = true;
+
+        // Función auxiliar para marcar error en un campo
+        function validateField(field, regex) {
+          if (!regex.test(field.value.trim())) {
+            field.style.border = "2px solid red";
+            valid = false;
+          } else {
+            field.style.border = "";
+          }
+        }
+
+        // Código de Transacción: solo números, de 1 a 10 dígitos
+        const codigoTransaccion = document.getElementById("codigo_transaccion");
+        validateField(codigoTransaccion, /^\d{1,10}$/);
+
+        // Nombre del Cliente: solo letras y espacios
+        const nombreCliente = document.getElementById("nombre_cliente");
+        validateField(nombreCliente, /^[A-Za-z\s]+$/);
+
+        // Teléfono del Cliente: 9 dígitos, iniciando con 9
+        const telefonoCliente = document.getElementById("telefono_cliente");
+        validateField(telefonoCliente, /^9\d{8}$/);
+
+        // Correo Electrónico: debe contener "@" y "."
+        const correoCliente = document.getElementById("correo_cliente");
+        if (!(correoCliente.value.includes("@") && correoCliente.value.includes("."))) {
+          correoCliente.style.border = "2px solid red";
+          valid = false;
+        } else {
+          correoCliente.style.border = "";
+        }
+
+        // Ubicación de Envío: no debe estar vacío
+        const ubicacionEnvio = document.getElementById("ubicacion_envio");
+        if (ubicacionEnvio.value.trim() === "") {
+          ubicacionEnvio.style.border = "2px solid red";
+          valid = false;
+        } else {
+          ubicacionEnvio.style.border = "";
+        }
+
+        // Nombre de la Persona que Recibe: solo letras y espacios
+        const nombreReceptor = document.getElementById("nombre_receptor");
+        validateField(nombreReceptor, /^[A-Za-z\s]+$/);
+
+        // Teléfono de la Persona que Recibe: 9 dígitos, iniciando con 9
+        const telefonoReceptor = document.getElementById("telefono_receptor");
+        validateField(telefonoReceptor, /^9\d{8}$/);
+
+        // Dirección de Envío: no debe estar vacía (se acepta cualquier carácter)
+        const direccionEnvio = document.getElementById("direccion_envio");
+        if (direccionEnvio.value.trim() === "") {
+          direccionEnvio.style.border = "2px solid red";
+          valid = false;
+        } else {
+          direccionEnvio.style.border = "";
+        }
+
+        // Fecha de Envío: obligatoria
+        const fechaEnvio = document.getElementById("fecha_envio");
+        if (fechaEnvio.value.trim() === "") {
+          fechaEnvio.style.border = "2px solid red";
+          valid = false;
+        } else {
+          fechaEnvio.style.border = "";
+        }
+
+        // Captura de Yape: debe haber un archivo seleccionado
+        const capturaYape = document.getElementById("captura_yape");
+        if (capturaYape.files.length === 0) {
+          capturaYape.style.border = "2px solid red";
+          valid = false;
+        } else {
+          capturaYape.style.border = "";
+        }
+
+        if (!valid) {
+          e.preventDefault();
+          alert("Por favor, corrija los campos marcados en rojo.");
+        }
       });
     });
+
+    // --- Inicialización del Mapa y cálculo del costo de envío usando Distance Matrix API ---
+    function initMap() {
+      // Punto fijo de referencia (por ejemplo, centro de distribución)
+      const fixedPoint = new google.maps.LatLng(-16.403000, -71.533250);
+
+      function initializeMap(centerCoords) {
+        const map = new google.maps.Map(document.getElementById("map"), {
+          center: centerCoords,
+          zoom: 13
+        });
+        // Coloca el marcador inicial en el centro
+        const marker = new google.maps.Marker({
+          position: centerCoords,
+          map: map,
+          draggable: true
+        });
+
+        // Al soltar el marcador se consulta la Distance Matrix API para obtener la ruta en auto
+        marker.addListener('dragend', function(event) {
+          const selectedLatLng = event.latLng;
+          const service = new google.maps.DistanceMatrixService();
+          service.getDistanceMatrix({
+            origins: [fixedPoint],
+            destinations: [selectedLatLng],
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.METRIC,
+          }, function(response, status) {
+            if (status === google.maps.DistanceMatrixStatus.OK) {
+              const results = response.rows[0].elements;
+              if (results[0].status === "OK") {
+                // Se obtiene la distancia (en metros) según la ruta en auto
+                const distanceInMeters = results[0].distance.value;
+                const distanceKm = distanceInMeters / 1000;
+                // Calcular el costo de envío: 1.5 soles por cada km recorrida
+                const shippingCost = (distanceKm * 1.5).toFixed(2);
+                document.getElementById("shippingCost").innerText = shippingCost;
+                // Se recalcula el total (teniendo en cuenta que pudiera haber un descuento aplicado)
+                updateTotal();
+
+                // Generar enlace a la ubicación en Google Maps y actualizar el campo (y deshabilitarlo)
+                const locationLink = "https://www.google.com/maps?q=" + selectedLatLng.lat() + "," + selectedLatLng.lng();
+                const ubicacionInput = document.getElementById("ubicacion_envio");
+                ubicacionInput.value = locationLink;
+                ubicacionInput.readOnly = true;
+              } else {
+                console.error("No se pudo obtener la distancia: " + results[0].status);
+              }
+            } else {
+              console.error("Error con Distance Matrix API: " + status);
+            }
+          });
+        });
+      }
+
+      // Se intenta centrar el mapa usando geolocalización
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const userLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          initializeMap(userLocation);
+        }, function() {
+          // En caso de error, se usa una ubicación por defecto
+          initializeMap({ lat: -12.0464, lng: -77.0428 });
+        });
+      } else {
+        initializeMap({ lat: -12.0464, lng: -77.0428 });
+      }
+    }
+    // Hacer que initMap sea accesible globalmente para el callback de Google Maps
+    window.initMap = initMap;
   </script>
+
+  <!-- Cargar la API de Google Maps con la librería geometry (reemplaza YOUR_GOOGLE_MAPS_API_KEY por tu clave real) -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARRVaoINbxeDmpAeI1Uh3fvbi8w0qu0t4&callback=initMap&libraries=geometry"></script>
 {% endblock %}

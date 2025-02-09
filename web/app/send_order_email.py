@@ -65,6 +65,17 @@ def send_order_email(form_data):
       <head>
         <meta charset="UTF-8">
         <style>
+          table {{
+            border-collapse: collapse;
+            width: 100%;
+          }}
+          table, th, td {{
+            border: 1px solid #000;
+          }}
+          th, td {{
+            padding: 8px;
+            text-align: left;
+          }}
           .button {{
             display: inline-block;
             padding: 10px 20px;
@@ -89,7 +100,14 @@ def send_order_email(form_data):
         <p><strong>Teléfono de la Persona que Recibe:</strong> {form_data.get('telefono_receptor')}</p>
         <p><strong>Dirección de Envío:</strong> {form_data.get('direccion_envio')}</p>
         <p><strong>Fecha de Envío:</strong> {form_data.get('fecha_envio')}</p>
-        <p><strong>Captura Yape:</strong> {form_data.get('captura_yape')}</p>
+        <hr>
+        <h3>Detalle de la Compra</h3>
+        {form_data.get('cart_table_html')}
+        <hr>
+        <p><strong>Subtotal:</strong> S/ {form_data.get('cart_subtotal')}</p>
+        <p><strong>Gastos de Envío:</strong> S/ {form_data.get('shipping_cost')}</p>
+        <p><strong>Descuento por Cupón:</strong> - S/ {form_data.get('coupon_discount') or "0.00"}</p>
+        <p><strong>Total:</strong> S/ {form_data.get('total')}</p>
         <hr>
         <p>Este es un mensaje automático generado por el sistema de pedidos de Anyalua regalos &amp; detalles.</p>
         <p>
@@ -98,6 +116,7 @@ def send_order_email(form_data):
       </body>
     </html>
     """
+
     
     # Crear el mensaje de correo para operadores
     msg_ops = MIMEMultipart("related")

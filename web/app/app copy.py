@@ -181,19 +181,28 @@ def update_cart():
     return redirect(url_for('carrito'))
 
 @app.route('/carrito')
-@app.route('/carrito')
 def carrito():
-    cart_items = obtener_productos_del_carrito()  # Retorna la lista de productos con claves: 'product_code', 'image', 'product_name', 'unit_price', 'quantity'
+    # Obtener los productos del carrito usando la función definida
+    cart_items = obtener_productos_del_carrito()  # Devuelve una lista de diccionarios con la información necesaria
+    
+    # Calcular el subtotal y otros totales
     cart_subtotal = sum(item['subtotal'] for item in cart_items)
     shipping_cost = calcular_gastos(cart_items)
     coupon_discount = 0
     if 'coupon' in session and session['coupon'] == "DESCUENTO10":
+        # Por ejemplo, se descuenta el 10% sobre el subtotal (o puedes aplicar la lógica que desees)
         coupon_discount = cart_subtotal * 0.10
     total = cart_subtotal + shipping_cost - coupon_discount
-    return render_template('carrito.html',
-                           cart_items=cart_items,
-                           total=total)
 
+    # Asegúrate de pasar todas las variables que usa la plantilla
+    return render_template(
+        'carrito.html',
+        cart_items=cart_items,
+        cart_subtotal=cart_subtotal,
+        shipping_cost=shipping_cost,
+        coupon_discount=coupon_discount,
+        total=total
+    )
 
 @app.route('/confirm_payment', methods=['POST'])
 def confirm_payment():
@@ -202,13 +211,14 @@ def confirm_payment():
 
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
+    """Formulario para confirmar el pago y completar los datos del envío."""
     if request.method == 'POST':
-        # Procesar el formulario (por ejemplo, envío de correo, guardado de datos, etc.)
+        # Recopilar los datos del formulario, incluyendo el nuevo campo de correo electrónico
         data = {
             'codigo_transaccion': request.form['codigo_transaccion'],
             'nombre_cliente': request.form['nombre_cliente'],
             'telefono_cliente': request.form['telefono_cliente'],
-            'correo_cliente': request.form['correo_cliente'],
+            'correo_cliente': request.form['correo_cliente'],  # Nuevo campo
             'ubicacion_envio': request.form['ubicacion_envio'],
             'nombre_receptor': request.form['nombre_receptor'],
             'telefono_receptor': request.form['telefono_receptor'],
@@ -217,7 +227,7 @@ def checkout():
             'captura_yape': request.files['captura_yape'].filename
         }
         
-        # Guardar la imagen en static/uploads/
+        # Guardar la imagen subida en la carpeta static/uploads/
         upload_folder = os.path.join('static', 'uploads')
         if not os.path.exists(upload_folder):
             os.makedirs(upload_folder)
@@ -225,40 +235,63 @@ def checkout():
         filename = file.filename
         filepath = os.path.join(upload_folder, filename)
         file.save(filepath)
-        data['captura_yape_path'] = filename
-
-        # Enviar correo (función send_order_email ya implementada)
+        data['captura_yape_path'] = filename  # Se guarda la ruta relativa (se unirá con static/uploads/ en send_order_email)
+        
+        # Enviar el correo de pedido a los operadores (ya implementado en send_order_email)
+        # Se asume que send_order_email ya envía el correo a rodety@gmail.com y fortydata@gmail.com.
         from send_order_email import send_order_email
         order_code = send_order_email(data)
         
-        # Enviar acuse de recibo al cliente (código omitido para brevedad)
-        # ...
+        # Enviar acuse de recibo de confirmación de pago al cliente
+        import smtplib
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+        from email.header import Header
 
+        # Preparar asunto y cuerpo del correo para el cliente
+        confirmation_subject = Header(f"Acuse de Recibo - Pedido {order_code}", 'utf-8')
+        confirmation_body = f"""
+        <html>
+          <head><meta charset="UTF-8"></head>
+          <body>
+            <p>Estimado/a {data.get('nombre_cliente')},</p>
+            <p>Se recibió el pago y se procede a realizar el envío de su compra con los siguientes datos de envío:</p>
+            <p><strong>Dirección de Envío:</strong> {data.get('direccion_envio')}</p>
+            <p>Si desea cambiar o corregir alguno de los datos, por favor responda a este correo.</p>
+            <p>Gracias por su compra.</p>
+          </body>
+        </html>
+        """
+        customer_email = data.get('correo_cliente')
+        msg = MIMEMultipart("alternative")
+        msg['From'] = "hubeidata@gmail.com"
+        msg['To'] = customer_email
+        msg['Subject'] = confirmation_subject
+        msg.attach(MIMEText(confirmation_body, 'html', 'utf-8'))
+        
+        try:
+            smtp_server = "smtp.gmail.com"
+            smtp_port = 587
+            server = smtplib.SMTP(smtp_server, smtp_port)
+            server.starttls()
+            server.login("hubeidata@gmail.com", "TU_CONTRASEÑA_DE_APLICACION")
+            server.sendmail("hubeidata@gmail.com", [customer_email], msg.as_string().encode('utf-8'))
+            server.quit()
+            print("Acuse de recibo enviado al cliente.")
+        except Exception as e:
+            print("Error al enviar el acuse de recibo al cliente:", e)
+        
         flash("¡Pedido realizado con éxito!")
-        session.pop('cart', None)
+        session.pop('cart', None)  # Limpiar el carrito
         session.pop('coupon', None)
         return redirect(url_for('index'))
     else:
-        # Para la solicitud GET: obtener la información del carrito y calcular totales
-        cart_items = obtener_productos_del_carrito()  # Devuelve una lista de diccionarios
-        cart_subtotal = sum(item['subtotal'] for item in cart_items)
-        shipping_cost = calcular_gastos(cart_items)
-        coupon_discount = 0
+        cart = session.get('cart', [])
+        total = sum(item['precio'] * item.get('cantidad', 1) for item in cart)
         if 'coupon' in session and session['coupon'] == "DESCUENTO10":
-            coupon_discount = cart_subtotal * 0.10
-        total = cart_subtotal + shipping_cost - coupon_discount
+            total = total * 0.9
         fecha_hoy = datetime.today().strftime("%Y-%m-%d")
-        
-        # Se pasan todas las variables necesarias a la plantilla
-        return render_template(
-            'checkout.html',
-            cart_items=cart_items,
-            cart_subtotal=cart_subtotal,
-            shipping_cost=shipping_cost,
-            coupon_discount=coupon_discount,
-            total=total,
-            fecha_hoy=fecha_hoy
-        )
+        return render_template('checkout.html', total=total, fecha_hoy=fecha_hoy)
 
 @app.route('/remove_from_cart/<codigo>', methods=['POST'])
 def remove_from_cart(codigo):

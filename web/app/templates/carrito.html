@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1 class="text-center romantic">Carrito de Compras</h1>
-  {% if cart %}
+  {% if cart_items %}
     <!-- Formulario para actualizar cantidades, cupón y eliminación de productos -->
     <form action="{{ url_for('update_cart') }}" method="post" id="cartForm">
       <table class="table table-bordered">
@@ -17,40 +17,41 @@
           </tr>
         </thead>
         <tbody>
-          {% for item in cart %}
-            <tr data-item-id="{{ item['codigo'] }}">
+          {% for item in cart_items %}
+            <tr data-item-id="{{ item['product_code'] }}">
               <td>
-                <img src="{{ url_for('static', filename=item['imagen'] ~ '.jpeg') }}"
-                     alt="{{ item['nombre'] }}"
+                <!-- Se concatena la extensión si en la base de datos solo se guarda la ruta sin extensión -->
+                <img src="{{ url_for('static', filename=item['image'] ~ '.jpeg') }}"
+                     alt="{{ item['product_name'] }}"
                      class="img-fluid"
                      style="max-width:100px;">
               </td>
-              <td>{{ item['nombre'] }}</td>
-              <td>S/ {{ item['precio'] }}</td>
+              <td>{{ item['product_name'] }}</td>
+              <td>S/ {{ item['unit_price'] }}</td>
               <td>
                 <div class="input-group">
                   <div class="input-group-prepend">
-                    <button class="btn btn-outline-secondary btn-decrease" type="button" data-item-id="{{ item['codigo'] }}">-</button>
+                    <button class="btn btn-outline-secondary btn-decrease" type="button" data-item-id="{{ item['product_code'] }}">-</button>
                   </div>
                   <input type="text"
-                         name="quantity_{{ item['codigo'] }}"
+                         name="quantity_{{ item['product_code'] }}"
                          class="form-control text-center quantity-input"
-                         value="{{ item.get('cantidad', 1) }}"
-                         data-item-id="{{ item['codigo'] }}"
+                         value="{{ item['quantity'] }}"
+                         data-item-id="{{ item['product_code'] }}"
                          style="max-width:50px;">
                   <div class="input-group-append">
-                    <button class="btn btn-outline-secondary btn-increase" type="button" data-item-id="{{ item['codigo'] }}">+</button>
+                    <button class="btn btn-outline-secondary btn-increase" type="button" data-item-id="{{ item['product_code'] }}">+</button>
                   </div>
                 </div>
               </td>
               <td>
-                S/ <span class="item-subtotal" data-item-id="{{ item['codigo'] }}">
-                      {{ (item['precio'] * item.get('cantidad', 1)) | round(2) }}
+                S/ <span class="item-subtotal" data-item-id="{{ item['product_code'] }}">
+                      {{ (item['unit_price'] * item['quantity']) | round(2) }}
                     </span>
               </td>
               <td>
                 <!-- Botón para eliminar el producto -->
-                <button class="btn btn-danger" type="submit" name="remove" value="{{ item['codigo'] }}">Eliminar</button>
+                <button class="btn btn-danger" type="submit" name="remove" value="{{ item['product_code'] }}">Eliminar</button>
               </td>
             </tr>
           {% endfor %}
@@ -87,6 +88,7 @@
       function updateSubtotal(itemId) {
         const row = document.querySelector(`tr[data-item-id="${itemId}"]`);
         const quantityInput = row.querySelector('input.quantity-input');
+        // Se asume que el precio está en la tercera columna (Precio Unitario)
         const priceText = row.querySelector('td:nth-child(3)').textContent;
         const price = parseFloat(priceText.replace('S/','').trim());
         const quantity = parseInt(quantityInput.value);

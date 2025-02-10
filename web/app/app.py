@@ -58,23 +58,21 @@ def initialize():
 
 def obtener_productos_del_carrito():
     """
-    Recupera los productos del carrito almacenados en la sesión y
-    los transforma en una lista de diccionarios con la siguiente estructura:
-      - id: identificador del producto (si existe)
-      - image: ruta de la imagen (usando la clave 'imagen')
-      - product_name: nombre del producto (usando la clave 'nombre')
-      - product_code: código del producto (usando la clave 'codigo')
-      - unit_price: precio unitario (usando la clave 'precio')
-      - quantity: cantidad (usando la clave 'cantidad', por defecto 1)
-      - subtotal: precio unitario * cantidad
+    Recupera los productos del carrito de la sesión y genera una lista de diccionarios con:
+      - image: ruta de la imagen (campo 'imagen')
+      - product_name: nombre del producto (campo 'nombre')
+      - product_code: código del producto (campo 'codigo')
+      - unit_price: precio unitario (campo 'precio')
+      - quantity: cantidad (campo 'cantidad', por defecto 1)
+      - subtotal: unit_price * quantity
     """
     cart = session.get('cart', [])
     cart_items = []
     for item in cart:
-        # Aseguramos que los valores necesarios estén disponibles
+        # Se usa el valor 'cantidad' que ya se actualizó (por defecto es 1)
         cantidad = item.get('cantidad', 1)
         precio = item.get('precio', 0)
-        new_item = {
+        cart_items.append({
             'id': item.get('id'),
             'image': item.get('imagen'),
             'product_name': item.get('nombre'),
@@ -82,8 +80,7 @@ def obtener_productos_del_carrito():
             'unit_price': precio,
             'quantity': cantidad,
             'subtotal': precio * cantidad
-        }
-        cart_items.append(new_item)
+        })
     return cart_items
 
 def calcular_gastos(cart_items):
@@ -93,7 +90,7 @@ def calcular_gastos(cart_items):
     Puedes ajustar la lógica para que dependa del peso, la distancia u otros parámetros.
     """
     if cart_items:
-        return 15.00
+        return 0.00
     return 0.00
 
 # ======================================================
@@ -203,7 +200,7 @@ def confirm_payment():
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     if request.method == 'POST':
-        # Procesar el formulario (por ejemplo, envío de correo, guardado de datos, etc.)
+        # Recopilar datos del formulario
         data = {
             'codigo_transaccion': request.form['codigo_transaccion'],
             'nombre_cliente': request.form['nombre_cliente'],
@@ -217,7 +214,7 @@ def checkout():
             'captura_yape': request.files['captura_yape'].filename
         }
         
-        # Guardar la imagen en static/uploads/
+        # Guardar la imagen subida en la carpeta static/uploads/
         upload_folder = os.path.join('static', 'uploads')
         if not os.path.exists(upload_folder):
             os.makedirs(upload_folder)
@@ -225,22 +222,53 @@ def checkout():
         filename = file.filename
         filepath = os.path.join(upload_folder, filename)
         file.save(filepath)
-        data['captura_yape_path'] = filename
+        data['captura_yape_path'] = filename  # Se guarda la ruta relativa
+        
+        # Obtener los productos del carrito
+        cart_items = obtener_productos_del_carrito()
+        cart_subtotal = sum(item['subtotal'] for item in cart_items)
+        
+        # Leer el gasto de envío actualizado desde el campo oculto del formulario.
+        # Este valor se actualiza en el cliente con JavaScript al mover el marcador.
+        try:
+            shipping_cost = float(request.form.get('shipping_cost', 0))
+        except ValueError:
+            shipping_cost = 0.0
 
-        # Enviar correo (función send_order_email ya implementada)
+        # Procesar cupón (por ejemplo, "DESCUENTO10")
+        coupon_discount = 0
+        if 'coupon' in session and session['coupon'] == "DESCUENTO10":
+            coupon_discount = cart_subtotal * 0.10
+
+        total = cart_subtotal + shipping_cost - coupon_discount
+
+        # Renderizar el fragmento HTML (cart_table_html) para incluirlo en el correo a los operadores
+        cart_table_html = render_template('cart_table_html.html',
+                                          cart_items=cart_items,
+                                          cart_subtotal=cart_subtotal,
+                                          shipping_cost=shipping_cost,
+                                          coupon_discount=coupon_discount,
+                                          total=total)
+
+        # Agregar los totales y el fragmento HTML al diccionario de datos para el correo
+        data['cart_table_html'] = cart_table_html
+        data['cart_subtotal'] = cart_subtotal
+        data['shipping_cost'] = shipping_cost
+        data['coupon_discount'] = coupon_discount
+        data['total'] = total
+
+        # Enviar el correo de pedido a los operadores (la función send_order_email usa estos datos)
         from send_order_email import send_order_email
         order_code = send_order_email(data)
         
         # Enviar acuse de recibo al cliente (código omitido para brevedad)
-        # ...
-
         flash("¡Pedido realizado con éxito!")
-        session.pop('cart', None)
+        session.pop('cart', None)   # Limpiar el carrito
         session.pop('coupon', None)
         return redirect(url_for('index'))
     else:
-        # Para la solicitud GET: obtener la información del carrito y calcular totales
-        cart_items = obtener_productos_del_carrito()  # Devuelve una lista de diccionarios
+        # Para GET: calcular totales y mostrar el formulario de checkout
+        cart_items = obtener_productos_del_carrito()
         cart_subtotal = sum(item['subtotal'] for item in cart_items)
         shipping_cost = calcular_gastos(cart_items)
         coupon_discount = 0
@@ -248,17 +276,13 @@ def checkout():
             coupon_discount = cart_subtotal * 0.10
         total = cart_subtotal + shipping_cost - coupon_discount
         fecha_hoy = datetime.today().strftime("%Y-%m-%d")
-        
-        # Se pasan todas las variables necesarias a la plantilla
-        return render_template(
-            'checkout.html',
-            cart_items=cart_items,
-            cart_subtotal=cart_subtotal,
-            shipping_cost=shipping_cost,
-            coupon_discount=coupon_discount,
-            total=total,
-            fecha_hoy=fecha_hoy
-        )
+        return render_template('checkout.html',
+                               cart_items=cart_items,
+                               cart_subtotal=cart_subtotal,
+                               shipping_cost=shipping_cost,
+                               coupon_discount=coupon_discount,
+                               total=total,
+                               fecha_hoy=fecha_hoy)
 
 @app.route('/remove_from_cart/<codigo>', methods=['POST'])
 def remove_from_cart(codigo):

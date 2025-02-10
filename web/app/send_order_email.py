@@ -16,23 +16,24 @@ def send_order_email(form_data):
     """
     Envía dos correos electrónicos al confirmar un pedido:
       1. A los operadores (rodety@gmail.com y fortydata@gmail.com) con los datos del pedido,
-         la imagen adjunta y un botón "Pago Verificado".
+         imágenes adjuntas (la captura de Yape y, opcionalmente, las imágenes de los productos)
+         y un botón "Pago Verificado".
       2. Un acuse de recibo de confirmación de pago al correo del cliente.
     
-    Parámetros:
-      form_data (dict): Diccionario con los datos del formulario que debe contener:
-          - 'codigo_transaccion'
-          - 'nombre_cliente'
-          - 'telefono_cliente'
-          - 'correo_cliente'       # Correo del cliente
-          - 'ubicacion_envio'
-          - 'nombre_receptor'
-          - 'telefono_receptor'
-          - 'direccion_envio'
-          - 'fecha_envio'
-          - 'captura_yape': nombre del archivo de la imagen
-          - 'captura_yape_path': ruta (relativa o absoluta) al archivo; si es relativa, se buscará en "static/uploads/"
-    
+    Se espera que form_data contenga, entre otros, las siguientes claves:
+      - 'codigo_transaccion'
+      - 'nombre_cliente'
+      - 'telefono_cliente'
+      - 'correo_cliente'
+      - 'ubicacion_envio'
+      - 'nombre_receptor'
+      - 'telefono_receptor'
+      - 'direccion_envio'
+      - 'fecha_envio'
+      - 'captura_yape': nombre del archivo de la captura (por ejemplo, "captura_yape.jpg")
+      - 'captura_yape_path': ruta (relativa o absoluta) de la captura; si es relativa, se buscará en "static/uploads/"
+      - 'cart_items' (opcional): lista de diccionarios de productos con clave 'imagen' (por ejemplo, "producto1.jpg")
+      - Además, se espera que se hayan incluido en form_data los totales (cart_subtotal, shipping_cost, coupon_discount, total)
     Retorna:
       order_code (str): Código único del pedido.
     """
@@ -42,22 +43,16 @@ def send_order_email(form_data):
     # Obtener la fecha y hora actual
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-    # Configuración del correo (la misma para ambos envíos)
+    # Configuración del correo
     sender_email = "hubeidata@gmail.com"
     sender_password = "ixnnzohjzdnxshmh"  # Reemplaza con tu contraseña de aplicación
     recipients_operators = ["rodety@gmail.com", "fortydata@gmail.com"]
     
-    # -----------------------------------------------
-    # Correo para los operadores
-    # -----------------------------------------------
-    subject_text = f"Se recibió nuevo Pedido de {form_data.get('nombre_cliente')} {now}"
-    subject = Header(subject_text, 'utf-8')
-    
     # Enlace mailto para el botón "Pago Verificado"
     mailto_link = (
-    f"mailto:{form_data.get('correo_cliente')}?subject=Pago%20Verificado&"
-    "body=Se%20recibió%20el%20pago%2C%20se%20prosigue%20con%20el%20env%C3%ADo%20de%20su%20compra.%20"
-    "En%20caso%20de%20cambiar%20alguno%20de%20los%20datos%2C%20responda%20a%20este%20correo."
+        f"mailto:{form_data.get('correo_cliente')}?subject=Pago%20Verificado&"
+        "body=Se%20recibió%20el%20pago%2C%20se%20prosigue%20con%20el%20env%C3%ADo%20de%20su%20compra.%20"
+        "En%20caso%20de%20cambiar%20alguno%20de%20los%20datos%2C%20responda%20a%20este%20correo."
     )
     
     html_content = f"""
@@ -65,17 +60,6 @@ def send_order_email(form_data):
       <head>
         <meta charset="UTF-8">
         <style>
-          table {{
-            border-collapse: collapse;
-            width: 100%;
-          }}
-          table, th, td {{
-            border: 1px solid #000;
-          }}
-          th, td {{
-            padding: 8px;
-            text-align: left;
-          }}
           .button {{
             display: inline-block;
             padding: 10px 20px;
@@ -100,14 +84,10 @@ def send_order_email(form_data):
         <p><strong>Teléfono de la Persona que Recibe:</strong> {form_data.get('telefono_receptor')}</p>
         <p><strong>Dirección de Envío:</strong> {form_data.get('direccion_envio')}</p>
         <p><strong>Fecha de Envío:</strong> {form_data.get('fecha_envio')}</p>
+        <p><strong>Captura Yape:</strong> {form_data.get('captura_yape')}</p>
         <hr>
-        <h3>Detalle de la Compra</h3>
-        {form_data.get('cart_table_html')}
-        <hr>
-        <p><strong>Subtotal:</strong> S/ {form_data.get('cart_subtotal')}</p>
-        <p><strong>Gastos de Envío:</strong> S/ {form_data.get('shipping_cost')}</p>
-        <p><strong>Descuento por Cupón:</strong> - S/ {form_data.get('coupon_discount') or "0.00"}</p>
-        <p><strong>Total:</strong> S/ {form_data.get('total')}</p>
+        <!-- Se puede incluir el detalle de compra (tabla) -->
+        {form_data.get('cart_table_html', '')}
         <hr>
         <p>Este es un mensaje automático generado por el sistema de pedidos de Anyalua regalos &amp; detalles.</p>
         <p>
@@ -116,38 +96,66 @@ def send_order_email(form_data):
       </body>
     </html>
     """
-
     
-    # Crear el mensaje de correo para operadores
+    # Crear el mensaje para operadores
     msg_ops = MIMEMultipart("related")
     msg_ops['From'] = sender_email
     msg_ops['To'] = ", ".join(recipients_operators)
-    msg_ops['Subject'] = subject
+    msg_ops['Subject'] = Header(f"Se recibió nuevo Pedido de {form_data.get('nombre_cliente')} {now}", 'utf-8')
     msg_alt_ops = MIMEMultipart("alternative")
     msg_ops.attach(msg_alt_ops)
     msg_alt_ops.attach(MIMEText(html_content, 'html', 'utf-8'))
     
-    # Adjuntar la imagen (captura del Yape)
-    image_path = form_data.get('captura_yape_path')
-    if image_path:
-        # Si la ruta no es absoluta, se asume que es relativa a "static/uploads/"
-        if not os.path.isabs(image_path):
+    # Función auxiliar para obtener la ruta completa de una imagen
+    def obtener_ruta_imagen(ruta):
+        if not os.path.isabs(ruta):
             base_dir = os.path.join(os.getcwd(), "static", "uploads")
-            image_path = os.path.join(base_dir, image_path)
-        if os.path.exists(image_path):
+            return os.path.join(base_dir, ruta)
+        return ruta
+
+    # Adjuntar la imagen de la captura del Yape
+    captura_path = form_data.get('captura_yape_path')
+    if captura_path:
+        full_captura_path = obtener_ruta_imagen(captura_path)
+        if os.path.exists(full_captura_path):
             try:
-                with open(image_path, 'rb') as f:
+                with open(full_captura_path, 'rb') as f:
                     img_data = f.read()
-                image_mime = MIMEImage(img_data)
-                image_mime.add_header('Content-ID', '<captura_yape>')
-                image_mime.add_header('Content-Disposition', 'attachment', filename=form_data.get('captura_yape'))
-                msg_ops.attach(image_mime)
+                img_mime = MIMEImage(img_data)
+                img_mime.add_header('Content-ID', '<captura_yape>')
+                img_mime.add_header('Content-Disposition', 'attachment', filename=form_data.get('captura_yape'))
+                msg_ops.attach(img_mime)
             except Exception as e:
-                print("Error al adjuntar la imagen para operadores:", e)
+                print("Error al adjuntar la imagen de la captura:", e)
         else:
-            print("El archivo de imagen no existe en la ruta:", image_path)
+            print("La imagen de la captura no existe en:", full_captura_path)
     
-    # Enviar correo a operadores
+    # Opcional: Adjuntar las imágenes de los productos si se incluyen en form_data['cart_items']
+    # Se utilizará la carpeta "static/imagenes_extraidas" para estas imágenes.
+    cart_items = form_data.get('cart_items', [])
+    # Construir la ruta base usando el directorio actual del archivo send_order_email.py
+    base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'imagenes_extraidas')
+    for item in cart_items:
+        image_filename = item.get('imagen')
+        if image_filename:
+            # Construir la ruta completa de la imagen
+            full_image_path = os.path.join(base_dir, image_filename)
+            if os.path.exists(full_image_path):
+                try:
+                    with open(full_image_path, 'rb') as f:
+                        prod_img_data = f.read()
+                    prod_img_mime = MIMEImage(prod_img_data)
+                    # Generar un Content-ID único (por ejemplo, usando el nombre de la imagen)
+                    cid = f"<{image_filename}>"
+                    prod_img_mime.add_header('Content-ID', cid)
+                    prod_img_mime.add_header('Content-Disposition', 'attachment', filename=image_filename)
+                    msg_ops.attach(prod_img_mime)
+                except Exception as e:
+                    print("Error al adjuntar la imagen del producto:", e)
+            else:
+                print("La imagen del producto no existe en:", full_image_path)
+    
+    # Enviar el correo a los operadores
     try:
         smtp_server = "smtp.gmail.com"
         smtp_port = 587
@@ -161,12 +169,10 @@ def send_order_email(form_data):
         print("Error al enviar el correo a operadores:", e)
     
     # -----------------------------------------------
-    # Correo de acuse de recibo para el cliente
-    # -----------------------------------------------
+    # Enviar acuse de recibo al cliente
     client_email = form_data.get('correo_cliente')
     if client_email:
-        client_subject_text = f"Acuse de Recibo - Pedido {order_code}"
-        client_subject = Header(client_subject_text, 'utf-8')
+        client_subject = Header(f"Acuse de Recibo - Pedido {order_code}", 'utf-8')
         client_html = f"""
     <html>
       <head>
@@ -208,26 +214,22 @@ def send_order_email(form_data):
         msg_client['Subject'] = client_subject
         msg_client.attach(MIMEText(client_html, 'html', 'utf-8'))
     
-    # Adjuntar la imagen (captura del Yape)
-    image_path = form_data.get('captura_yape_path')
-    if image_path:
-        # Si la ruta no es absoluta, se asume que es relativa a "static/uploads/"
-        if not os.path.isabs(image_path):
-            base_dir = os.path.join(os.getcwd(), "static", "uploads")
-            image_path = os.path.join(base_dir, image_path)
-        if os.path.exists(image_path):
-            try:
-                with open(image_path, 'rb') as f:
-                    img_data = f.read()
-                image_mime = MIMEImage(img_data)
-                image_mime.add_header('Content-ID', '<captura_yape>')
-                image_mime.add_header('Content-Disposition', 'attachment', filename=form_data.get('captura_yape'))
-                msg_client.attach(image_mime)
-            except Exception as e:
-                print("Error al adjuntar la imagen para cliente:", e)
-        else:
-            print("El archivo de imagen no existe en la ruta:", image_path)
-        
+        # Adjuntar la imagen (captura del Yape) para el cliente
+        if captura_path:
+            full_captura_path = obtener_ruta_imagen(captura_path)
+            if os.path.exists(full_captura_path):
+                try:
+                    with open(full_captura_path, 'rb') as f:
+                        img_data = f.read()
+                    img_mime = MIMEImage(img_data)
+                    img_mime.add_header('Content-ID', '<captura_yape>')
+                    img_mime.add_header('Content-Disposition', 'attachment', filename=form_data.get('captura_yape'))
+                    msg_client.attach(img_mime)
+                except Exception as e:
+                    print("Error al adjuntar la imagen para cliente:", e)
+            else:
+                print("La imagen de la captura no existe en:", full_captura_path)
+    
         try:
             server = smtplib.SMTP(smtp_server, smtp_port)
             server.starttls()
@@ -242,21 +244,43 @@ def send_order_email(form_data):
     
     return order_code
 
-# Ejemplo de uso directo del script (para pruebas)
+# Ejemplo de uso directo (para pruebas)
 if __name__ == "__main__":
     form_data = {
         'codigo_transaccion': 'TRANS123',
         'nombre_cliente': 'Juan Pérez',
         'telefono_cliente': '123456789',
-        'correo_cliente': 'anyaluadetallesyregalos@gmail.com',  # Correo del cliente
+        'correo_cliente': 'anyaluadetallesyregalos@gmail.com',
         'ubicacion_envio': 'Lima, Perú',
         'nombre_receptor': 'María López',
         'telefono_receptor': '987654321',
         'direccion_envio': 'Av. Siempre Viva 123',
         'fecha_envio': '2025-02-07',
         'captura_yape': 'captura_yape.jpg',
-        # Ruta relativa a "static/uploads/" (se unirá con dicha carpeta)
-        'captura_yape_path': 'captura_yape.jpg'
+        'captura_yape_path': 'captura_yape.jpg',
+        # Para pruebas, incluir una lista de productos:
+        'cart_items': [
+            {
+                'imagen': 'producto1.jpg',
+                'product_name': 'Producto 1',
+                'product_code': 'P001',
+                'unit_price': 10.0,
+                'quantity': 2,
+                'subtotal': 20.0
+            },
+            {
+                'imagen': 'producto2.jpg',
+                'product_name': 'Producto 2',
+                'product_code': 'P002',
+                'unit_price': 15.0,
+                'quantity': 1,
+                'subtotal': 15.0
+            }
+        ],
+        'cart_subtotal': 35.0,
+        'shipping_cost': 15.0,
+        'coupon_discount': 0.0,
+        'total': 50.0
     }
     order_code = send_order_email(form_data)
     print("Código de pedido:", order_code)

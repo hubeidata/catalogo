@@ -1,0 +1,102 @@
+<!-- cart_table_html.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalle de Compra</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+    th {
+      background-color: #f8f8f8;
+    }
+    .summary {
+      width: 50%;
+      float: right;
+      border: none;
+      margin-top: 20px;
+    }
+    .summary td {
+      padding: 5px;
+    }
+    .summary .label {
+      text-align: right;
+      font-weight: bold;
+    }
+    .summary .value {
+      text-align: right;
+    }
+    .discount {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h2>Detalle de Compra</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Imagen</th>
+        <th>Producto</th>
+        <th>Código</th>
+        <th>Precio Unitario</th>
+        <th>Cantidad</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart_items %}
+      <tr>
+        <td>
+          <img src="{{ url_for('static', filename=item.image) }}" alt="{{ item.product_name }}" style="max-width:100px;">
+        </td>
+        <td>{{ item.product_name }}</td>
+        <td>{{ item.product_code }}</td>
+        <td>S/ {{ item.unit_price | round(2) }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>S/ {{ item.subtotal | round(2) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <table class="summary">
+    <tr>
+      <td class="label">Subtotal:</td>
+      <td class="value">S/ {{ cart_subtotal | round(2) }}</td>
+    </tr>
+    <tr>
+      <td class="label">Gastos de Envío:</td>
+      <td class="value">S/ {{ shipping_cost | round(2) }}</td>
+    </tr>
+    {% if coupon_discount and coupon_discount > 0 %}
+    <tr>
+      <td class="label">Descuento por Cupón:</td>
+      <td class="value discount">- S/ {{ coupon_discount | round(2) }}</td>
+    </tr>
+    {% endif %}
+    <tr>
+      <td class="label">Total:</td>
+      <td class="value">S/ {{ total | round(2) }}</td>
+    </tr>
+  </table>
+</body>
+</html>

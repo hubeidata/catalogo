@@ -75,9 +75,9 @@ def save_to_json(data, output_file):
         json.dump(data, json_file, indent=4, ensure_ascii=False)
 
 def main():
-    pdf_path = "catalogo.pdf"
-    output_folder = "imagenes_extraidas"
-    json_output = "descripcion.json"
+    pdf_path = "san_valentin.pdf"
+    output_folder = "imagenes_san_valentin"
+    json_output = "descripcion_san_valentin.json"
     
     print("Extrayendo imágenes y sus posiciones...")
     images = extract_images_from_pdf(pdf_path, output_folder)

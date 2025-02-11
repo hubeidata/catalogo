@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1 class="text-center romantic">Carrito de Compras</h1>
+  {% if cart_items %}
+    <!-- Formulario para actualizar cantidades, cupón y eliminación de productos -->
+    <form action="{{ url_for('update_cart') }}" method="post" id="cartForm">
+      <!-- Contenedor responsive para la tabla -->
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Producto</th>
+              <th>Precio Unitario</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in cart_items %}
+              <tr data-item-id="{{ item['product_code'] }}">
+                <td>
+                  <!-- Se concatena la extensión si en la base de datos solo se guarda la ruta sin extensión -->
+                  <img src="{{ url_for('static', filename=item['image'] ~ '.jpeg') }}"
+                       alt="{{ item['product_name'] }}"
+                       class="img-fluid"
+                       style="max-width:100px;">
+                </td>
+                <td>{{ item['product_name'] }}</td>
+                <td>S/ {{ item['unit_price'] }}</td>
+                <td>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <button class="btn btn-outline-secondary btn-decrease" type="button" data-item-id="{{ item['product_code'] }}">-</button>
+                    </div>
+                    <input type="text"
+                           name="quantity_{{ item['product_code'] }}"
+                           class="form-control text-center quantity-input"
+                           value="{{ item['quantity'] }}"
+                           data-item-id="{{ item['product_code'] }}"
+                           style="max-width:50px;">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary btn-increase" type="button" data-item-id="{{ item['product_code'] }}">+</button>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  S/ <span class="item-subtotal" data-item-id="{{ item['product_code'] }}">
+                        {{ (item['unit_price'] * item['quantity']) | round(2) }}
+                      </span>
+                </td>
+                <td>
+                  <!-- Botón para eliminar el producto -->
+                  <button class="btn btn-danger" type="submit" name="remove" value="{{ item['product_code'] }}">Eliminar</button>
+                </td>
+              </tr>
+            {% endfor %}
+            <tr>
+              <td colspan="4" class="text-right"><strong>Total</strong></td>
+              <td colspan="2"><strong>S/ <span id="cart-total">{{ total | round(2) }}</span></strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Sección para ingresar un cupón de descuento (opcional) -->
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="form-group">
+            <label for="coupon">Código de Cupón:</label>
+            <input type="text" class="form-control" id="coupon" name="coupon" placeholder="Ingrese su cupón">
+          </div>
+        </div>
+        <div class="col-12 col-md-6 text-md-right text-center">
+          <!-- Enlace que redirige a checkout.html -->
+          <a href="{{ url_for('checkout') }}" class="btn btn-primary mt-2 mt-md-0">
+            Proceder con el Pago
+          </a>
+        </div>
+      </div>
+    </form>
+  {% else %}
+    <p>El carrito está vacío.</p>
+  {% endif %}
+
+  <!-- JavaScript para actualizar cantidades y recalcular subtotales y total -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function updateSubtotal(itemId) {
+        const row = document.querySelector(`tr[data-item-id="${itemId}"]`);
+        const quantityInput = row.querySelector('input.quantity-input');
+        // Se asume que el precio está en la tercera columna (Precio Unitario)
+        const priceText = row.querySelector('td:nth-child(3)').textContent;
+        const price = parseFloat(priceText.replace('S/','').trim());
+        const quantity = parseInt(quantityInput.value);
+        const newSubtotal = (price * quantity).toFixed(2);
+        row.querySelector('.item-subtotal').textContent = newSubtotal;
+        recalcTotal();
+      }
+      
+      function recalcTotal() {
+        let total = 0;
+        document.querySelectorAll('.item-subtotal').forEach(function(elem) {
+          total += parseFloat(elem.textContent);
+        });
+        document.getElementById('cart-total').textContent = total.toFixed(2);
+      }
+      
+      document.querySelectorAll('.btn-increase').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const itemId = this.getAttribute('data-item-id');
+          const input = document.querySelector(`input.quantity-input[data-item-id="${itemId}"]`);
+          input.value = parseInt(input.value) + 1;
+          updateSubtotal(itemId);
+        });
+      });
+      
+      document.querySelectorAll('.btn-decrease').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          const itemId = this.getAttribute('data-item-id');
+          const input = document.querySelector(`input.quantity-input[data-item-id="${itemId}"]`);
+          if (parseInt(input.value) > 1) {
+            input.value = parseInt(input.value) - 1;
+            updateSubtotal(itemId);
+          }
+        });
+      });
+    });
+  </script>
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Estilos adicionales para responsividad en smartphones -->
+<style>
+  @media (max-width: 576px) {
+    /* Cada producto ocupará el 100% del ancho en xs */
+    #productos-container .producto {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+    /* Aumentar el padding del contenedor de productos para aprovechar mejor el espacio */
+    #productos-container {
+      width: 100%;
+      padding: 0 15px;
+    }
+    /* Ajuste de las imágenes para que se muestren completas */
+    .img-container {
+      /* Permitir que la altura se ajuste automáticamente */
+      height: auto;
+    }
+    .img-container img {
+      /* Usar 'contain' para mostrar toda la imagen sin recortes */
+      object-fit: contain;
+      width: 100%;
+      height: auto;
+    }
+  }
+</style>
+
+<div class="container">
+  <div class="row">
+    <!-- Barra lateral izquierda con categorías -->
+    <aside class="col-12 col-md-3 mb-4">
+      <h4>Filtrar por Categoría</h4>
+      <ul class="list-group">
+        <li class="list-group-item active filtro" data-categoria="todos">Ver todos</li>
+        {% for categoria in categorias %}
+          <li class="list-group-item filtro" data-categoria="{{ categoria }}">
+            {{ categoria|replace('_', ' ')|title }}
+          </li>
+        {% endfor %}
+      </ul>
+    </aside>
+
+    <!-- Contenedor de productos -->
+    <div class="col-12 col-md-9">
+      <h1 class="text-center romantic">Catálogo de Productos para San Valentín 2025</h1>
+      <div class="row" id="productos-container">
+        {% for producto in productos %}
+          <!-- En xs: col-12 (1 producto por fila), en sm: col-6, en md: col-4, en lg: col-3 -->
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 producto" data-categoria="{{ producto['categoria'] }}">
+            <div class="card mb-4">
+              <div class="img-container">
+                <!-- Se agrega la clase "modal-trigger" y atributos data para usar en el modal -->
+                <img src="{{ url_for('static', filename= producto['imagen'] + '.jpeg') }}"
+                     class="card-img-top modal-trigger"
+                     alt="{{ producto['nombre'] }}"
+                     data-nombre="{{ producto['nombre'] }}"
+                     data-descripcion="{{ producto['descripcion'] }}"
+                     data-precio="{{ producto['precio'] }}"
+                     data-imagen="{{ url_for('static', filename= producto['imagen'] + '.jpeg') }}"
+                     data-buy="{{ url_for('add_to_cart', codigo=producto['codigo']) }}">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">{{ producto['nombre'] }}</h5>
+                <p class="card-text">{{ producto['descripcion'] }}</p>
+                <p class="card-text"><strong>Precio: S/ {{ producto['precio'] }}</strong></p>
+                <a href="{{ url_for('add_to_cart', codigo=producto['codigo']) }}" class="btn btn-danger">Comprar</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para mostrar detalles del producto -->
+<div class="modal fade" id="productoModal" tabindex="-1" role="dialog" aria-labelledby="productoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="productoModalLabel"></h5>
+        <!-- Botón de cierre con el atributo data-dismiss="modal" -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <!-- La imagen se centra usando mx-auto y d-block -->
+        <img id="productoModalImg" src="" class="img-fluid mx-auto d-block mb-3" alt="">
+        <p id="productoModalDesc"></p>
+        <p id="productoModalPrice"></p>
+      </div>
+      <div class="modal-footer">
+        <a id="productoModalBuy" href="#" class="btn btn-danger">Comprar</a>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript para filtrar productos y abrir el modal -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Filtrado por categoría
+  const filtros = document.querySelectorAll(".filtro");
+  filtros.forEach(filtro => {
+    filtro.addEventListener("click", function () {
+      // Quitar la clase activa del elemento actual y asignarla al clicado
+      document.querySelector(".list-group-item.active").classList.remove("active");
+      this.classList.add("active");
+
+      let categoriaSeleccionada = this.getAttribute("data-categoria");
+      let productos = document.querySelectorAll(".producto");
+      productos.forEach(producto => {
+        if (categoriaSeleccionada === "todos" || producto.getAttribute("data-categoria") === categoriaSeleccionada) {
+          producto.style.display = "block";
+        } else {
+          producto.style.display = "none";
+        }
+      });
+    });
+  });
+
+  // Evento para abrir el modal al hacer clic en la imagen del producto
+  const modalTriggers = document.querySelectorAll('.modal-trigger');
+  modalTriggers.forEach(trigger => {
+    trigger.addEventListener('click', function () {
+      const nombre = this.getAttribute('data-nombre');
+      const descripcion = this.getAttribute('data-descripcion');
+      const precio = this.getAttribute('data-precio');
+      const imagen = this.getAttribute('data-imagen');
+      const buyUrl = this.getAttribute('data-buy');
+
+      // Rellenar el contenido del modal
+      document.getElementById('productoModalLabel').textContent = nombre;
+      document.getElementById('productoModalImg').src = imagen;
+      document.getElementById('productoModalImg').alt = nombre;
+      document.getElementById('productoModalDesc').textContent = descripcion;
+      document.getElementById('productoModalPrice').innerHTML = `<strong>Precio: S/ ${precio}</strong>`;
+      document.getElementById('productoModalBuy').setAttribute('href', buyUrl);
+
+      // Mostrar el modal usando jQuery y Bootstrap
+      $('#productoModal').modal('show');
+    });
+  });
+});
+</script>
+{% endblock %}

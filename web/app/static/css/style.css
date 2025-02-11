@@ -1,0 +1,134 @@
+/* Fuente global para toda la página */
+body {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); /* Fondo degradado cálido */
+  font-family: 'Lora', serif;
+  color: #333; /* Color de texto ligeramente más oscuro para mejor legibilidad */
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilo de las tarjetas de productos */
+.card {
+  border: none;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  margin-bottom: 30px;
+  background-color: #ffffff;
+  border-radius: 20px; /* Bordes más pronunciados para un look moderno */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Efecto de elevación al pasar el ratón */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Contenedor de la imagen */
+.img-container {
+  position: relative;
+  height: 300px; /* Altura más generosa para resaltar la imagen */
+  width: 100%;
+  overflow: hidden;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #eaeaea; /* Fondo neutro en caso de imágenes con transparencias */
+}
+
+.img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Imagen con altura fija para otros usos */
+.img-fixed-height {
+  height: 220px;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* Estilo para la barra lateral (categorías) */
+aside {
+  margin-bottom: 30px;
+  padding: 25px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+aside h4 {
+  font-family: inherit;
+  font-size: 2em;
+  color: #ff6f61; /* Color acentuado, acorde al degradado del body */
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+/* Estilos para los items de la lista en la barra lateral */
+aside .list-group-item {
+  cursor: pointer;
+  padding: 12px 20px;
+  font-size: 1.2em;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 10px;
+  background-color: transparent;
+  border: none;
+}
+
+aside .list-group-item.active {
+  background-color: #ff6f61;
+  color: #ffffff;
+}
+
+aside .list-group-item:hover {
+  background-color: #ffb3a7;
+  color: #fff;
+}
+
+/* Título principal con estilo romántico y moderno */
+h1.romantic {
+  font-family: inherit;
+  font-size: 3em;
+  color: #ff6f61;
+  text-align: center;
+  margin-bottom: 50px;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para los botones */
+.btn-danger {
+  background-color: #ff6f61;
+  color: #fff;
+  border-radius: 30px; /* Botón con forma más redondeada */
+  padding: 12px 25px;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #ff3b30;
+}
+
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 20px;
+  }
+
+  .img-container {
+    height: 220px;
+  }
+
+  .img-fixed-height {
+    height: 170px;
+  }
+
+  aside {
+    margin-bottom: 20px;
+    padding: 20px;
+  }
+
+  h1.romantic {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+  }
+}

@@ -1,0 +1,205 @@
+{
+    "love_boxes": [
+      {
+        "nombre": "Dos Ositos",
+        "descripcion": "Dos Ositos incluye: 2 ositos medianos, 1 globo de corazón, 2 Gustozzy, 3 Ole Ole, 1 Coca-Cola 250ml, 1 chocolate Ferrero, 1 caja de corazón grande y 1 pulsera, creando el detalle perfecto",
+        "precio": 180,
+        "imagen": "imagenes_extraidas/dos_ositos",
+        "codigo": "2OS"
+      },
+      {
+        "nombre": "Corona",
+        "descripcion": "Corona incluye: 1 osito pequeño, 1 globo de corazón, 1 globo 5, 1 Gustozzy, 3 Ole Ole, 1 M&M, 1 Mentos, 1 Corona, 1 reloj y 1 caja Trupan, creando un detalle especial para sorprender en cualquier ocasión.",
+        "precio": 160,
+        "imagen": "imagenes_extraidas/corona",
+        "codigo": "CO1"
+      },
+      {
+        "nombre": "Te quiero",
+        "descripcion": "Te Quiero incluye: 1 osito mediano, 1 globo de corazón, 1 chocolate La Ibérica Largo, 1 cerveza Budweiser, 1 Obsesión, 1 Morochas, 3 Ole Ole, 1 Inca Chips, 1 Oreo y 1 caja Trupan, creando el detalle perfecto para expresar tu amor.",
+        "precio": 164,
+        "imagen": "imagenes_extraidas/te_quiero",
+        "codigo": "TQM"
+      },
+      {
+        "nombre": "Mariposita",
+        "descripcion": "Mariposita incluye: 1 Ferrero Rocher, 1 globo, 1 chocolate KitKat, 1 pulsera, 1 Corona, 1 Coca-Cola 250ml, 2 mariposas y 1 caja Trupan, creando un detalle dulce y especial para sorprender.",
+        "precio": 140,
+        "imagen": "imagenes_extraidas/mariposita",
+        "codigo": "MRP"
+      },
+      {
+        "nombre": "Corazon de Amor",
+        "descripcion": "Corazón de Amor incluye: 1 osito pequeño, 1 globo de corazón, 1 Gustozzy, 1 Twiz, 1 Obsesión, 1 Choco Donuts, 3 Ole Ole, 1 Oreo, 1 Doña Pepa, 1 Triángulo D'Onofrio y 1 caja de corazón grande, creando un dulce y tierno detalle para enamorar.",
+        "precio": 140,
+        "imagen": "imagenes_extraidas/mariposita",
+        "codigo": "COA"
+      },
+      {
+        "nombre": "Embriagado de amor",
+        "descripcion": "Embriagado de Amor incluye: 1 Inca Chips, 1 Obsesión, 1 Doña Pepa, 1 pulsera, 1 Ferrero Rocher, 1 cerveza Cusqueña, 1 Corona, 1 yogurt, 3 Ole Ole y 1 caja Trupan, creando el detalle perfecto para disfrutar y compartir",
+        "precio": 120,
+        "imagen": "imagenes_extraidas/embriagado_de_amor",
+        "codigo": "EBRA"
+      },
+      {
+        "nombre": "Eres mi Vizzio",
+        "descripcion": "Eres mi Vizzio incluye: 1 Vizzio de corazón, 1 osito grande, 1 globo de corazón, 1 globo de corazón, 1 rosa y 1 caja baúl, creando un detalle romántico y especial para enamorar.",
+        "precio": 150,
+        "imagen": "imagenes_extraidas/eres_mi_vizzio",
+        "codigo": "VZZ"
+      },
+      {
+        "nombre": "Te quiero bella II",
+        "descripcion": "Te Quiero Bella II incluye: 1 Inca Chips, 1 Doña Pepa, 1 globo de corazón, 1 espejo, 1 esmalte, 1 rubor, 1 pinta uñas, 1 pinta labios, 3 Ole Ole, 1 sobras, 1 esponjas Puff y 1 caja Trupan, creando un detalle perfecto para realzar su belleza y alegrar su día.",
+        "precio": 160,
+        "imagen": "imagenes_extraidas/Te_quiero_bella_2",
+        "codigo": "TQB2"
+      },
+      {
+        "nombre": "Te quiero bella",
+        "descripcion": "Te Quiero Bella incluye: 1 Inca Chips, 1 Doña Pepa, 1 globo con diseño especial, 1 espejo, 1 esmalte, 1 rubor, 1 pinta uñas, 1 pinta labios, 3 Ole Ole, 1 Obsesión, 1 set de esponjas Puff y 1 caja Trupan, creando un detalle hermoso y lleno de cariño para resaltar su belleza.",
+        "precio": 160,
+        "imagen": "imagenes_extraidas/te_quiero_bella",
+        "codigo": "TQB"
+      },
+      {
+        "nombre": "Te Quiero",
+        "descripcion": "Te Quiero incluye: 1 osito mediano con cojín bordado, 1 globo de corazón con mensaje, 1 chocolate La Ibérica, 1 cerveza Budweiser, 1 Obsesión, 1 Morochas, 3 Ole Ole, 1 Inca Chips, 1 Oreo y una elegante caja decorada, creando el detalle ideal para sorprender con amor y dulzura.",
+        "precio": 170,
+        "imagen": "imagenes_extraidas/te_quiero",
+        "codigo": "TQ01"
+      }
+    ],
+    "tulipanes_en_caja": [
+      {
+        "nombre": "12 tulipanes",
+        "descripcion": "Tulipanes capullo premium en caja y follaje decorativo",
+        "precio": 150,
+        "imagen": "imagenes_extraidas/image_2_3",
+        "codigo": "TU1"
+      },
+      {
+        "nombre": "6 tulipanes",
+        "descripcion": "Tulipanes capullo premium en caja y follaje decorativo",
+        "precio": 100,
+        "imagen": "imagenes_extraidas/image_2_4",
+        "codigo": "TU2"
+      },
+      {
+        "nombre": "6 tulipanes",
+        "descripcion": "Tulipanes capullo premium en caja y follaje decorativo",
+        "precio": 60,
+        "imagen": "imagenes_extraidas/image_2_5",
+        "codigo": "TU3"
+      }
+    ],
+    "rosas_en_caja": [
+      {
+        "nombre": "12 rosas rojas",
+        "descripcion": "Rosas rojas premium en caja, ideal para regalo",
+        "precio": 110,
+        "imagen": "imagenes_extraidas/image_5_3",
+        "codigo": "RO1"
+      },
+      {
+        "nombre": "6 rosas rojas",
+        "descripcion": "6 rosas rojas en caja, un detalle especial",
+        "precio": 100,
+        "imagen": "imagenes_extraidas/image_5_4",
+        "codigo": "RO2"
+      },
+      {
+        "nombre": "3 rosas rojas",
+        "descripcion": "6 rosas rojas en caja, un detalle especial",
+        "precio": 50,
+        "imagen": "imagenes_extraidas/image_5_5",
+        "codigo": "RO3"
+      }
+    ],
+    "ramo_de_rosas": [
+      {
+        "nombre": "12 rosas rojas",
+        "descripcion": "Ramo de mano con rosas rojas, follaje, papel koreano para envoltura y lazo elegante",
+        "precio": 90,
+        "imagen": "imagenes_extraidas/image_6_1",
+        "codigo": "RR1"
+      },
+      {
+        "nombre": "6 rosas rojas",
+        "descripcion": "6 rosas rojas en ramo, un detalle especial",
+        "precio": 55,
+        "imagen": "imagenes_extraidas/image_6_2",
+        "codigo": "RR2"
+      }
+    ],
+    "arreglo_de_rosas": [
+      {
+        "nombre": "Tronquito de rosas",
+        "descripcion": "Cerámica de tronco de madera con 3 rosas y flor de Lilium y lazo",
+        "precio": 60,
+        "imagen": "imagenes_extraidas/image_7_4",
+        "codigo": "TR1"
+      },
+      {
+        "nombre": "Osito Mix",
+        "descripcion": "6 Rosas, Base de cerámica con rosas, Corazón La Ibérica x 80 grs y peluche mediano (color de rosas: Rojo)",
+        "precio": 105,
+        "imagen": "imagenes_extraidas/image_7_3",
+        "codigo": "MX2"
+      }
+      ,
+      {
+        "nombre": "Paloma especial",
+        "descripcion": "12 rosas, base de cerámica con rosas, flores de Lilium y follaje",
+        "precio": 120,
+        "imagen": "imagenes_extraidas/image_9_2",
+        "codigo": "PO1"
+      },
+      {
+        "nombre": "Paloma especial",
+        "descripcion": "9 rosas, base de cerámica con rosas, flores de Lilium y follaje",
+        "precio": 105,
+        "imagen": "imagenes_extraidas/image_9_5",
+        "codigo": "P91"
+      }
+    ],
+    "arreglo_valentina": [
+      {
+        "nombre": "Valentina 12",
+        "descripcion": "12 rosas, base de cerámica con rosas, flores de Lilium y follaje",
+        "precio": 105,
+        "imagen": "imagenes_extraidas/image_10_3",
+        "codigo": "VA1"
+      },
+      {
+        "nombre": "Valentina 18",
+        "descripcion": "18 rosas, clasico con base de ceramica y rosas, alstroemerias y lilium",
+        "precio": 150,
+        "imagen": "imagenes_extraidas/image_10_4",
+        "codigo": "VA2"
+      },
+      {
+        "nombre": "Valentina 24",
+        "descripcion": "24 rosas, clasico con base de ceramica y rosas, alstroemerias y lilium",
+        "precio": 185,
+        "imagen": "imagenes_extraidas/image_10_5",
+        "codigo": "VA3"
+      },
+      {
+        "nombre": "Valentina 36",
+        "descripcion": "36 rosas, clasico con base de ceramica y rosas, alstroemerias y lilium",
+        "precio": 250,
+        "imagen": "imagenes_extraidas/image_11_3",
+        "codigo": "VA4"
+      },
+      {
+        "nombre": "Valentina 60",
+        "descripcion": "60 rosas, en canasata, alstroemerias y lilium",
+        "precio": 350,
+        "imagen": "imagenes_extraidas/image_11_4",
+        "codigo": "VA5"
+      }
+      
+    ]
+  }

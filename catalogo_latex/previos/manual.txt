@@ -1,0 +1,2 @@
+generar_contenido_latex.py
+LuaLaTeX catalogo.tex

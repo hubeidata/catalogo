@@ -15,7 +15,7 @@ email.charset.add_charset('utf-8', email.charset.SHORTEST, None, None)
 def send_order_email(form_data):
     """
     Envía dos correos electrónicos al confirmar un pedido:
-      1. A los operadores (rodety@gmail.com y fortydata@gmail.com) con los datos del pedido,
+      1. A los operadores (anyaluaregalosydetalles@gmail.com) con los datos del pedido,
          imágenes adjuntas (la captura de Yape y, opcionalmente, las imágenes de los productos)
          y un botón "Pago Verificado".
       2. Un acuse de recibo de confirmación de pago al correo del cliente.
@@ -30,9 +30,9 @@ def send_order_email(form_data):
       - 'telefono_receptor'
       - 'direccion_envio'
       - 'fecha_envio'
-      - 'captura_yape': nombre del archivo de la captura (por ejemplo, "captura_yape.jpg")
+      - 'captura_yape': nombre del archivo de la captura (ej. "captura_yape.jpg")
       - 'captura_yape_path': ruta (relativa o absoluta) de la captura; si es relativa, se buscará en "static/uploads/"
-      - 'cart_items' (opcional): lista de diccionarios de productos con clave 'imagen' (por ejemplo, "producto1.jpg")
+      - 'cart_items' (opcional): lista de diccionarios de productos con clave 'imagen' (ej. "producto1.jpg")
       - Además, se espera que se hayan incluido en form_data los totales (cart_subtotal, shipping_cost, coupon_discount, total)
     Retorna:
       order_code (str): Código único del pedido.
@@ -46,7 +46,7 @@ def send_order_email(form_data):
     # Configuración del correo
     sender_email = "hubeidata@gmail.com"
     sender_password = "ixnnzohjzdnxshmh"  # Reemplaza con tu contraseña de aplicación
-    recipients_operators = ["rodety@gmail.com", "fortydata@gmail.com"]
+    recipients_operators = ["anyaluaregalosydetalles@gmail.com"]
     
     # Enlace mailto para el botón "Pago Verificado"
     mailto_link = (
@@ -54,6 +54,13 @@ def send_order_email(form_data):
         "body=Se%20recibió%20el%20pago%2C%20se%20prosigue%20con%20el%20env%C3%ADo%20de%20su%20compra.%20"
         "En%20caso%20de%20cambiar%20alguno%20de%20los%20datos%2C%20responda%20a%20este%20correo."
     )
+    
+    # Formatear el descuento
+    try:
+        discount_value = float(form_data.get('coupon_discount', 0))
+    except (TypeError, ValueError):
+        discount_value = 0.0
+    discount_str = f"{discount_value:.2f}"
     
     html_content = f"""
     <html>
@@ -86,10 +93,15 @@ def send_order_email(form_data):
         <p><strong>Fecha y Hora de Envío:</strong> {form_data.get('fecha_envio')}</p>
         <p><strong>Captura Yape:</strong> {form_data.get('captura_yape')}</p>
         <hr>
-        <!-- Se puede incluir el detalle de compra (tabla) -->
+        <!-- Se incluye el detalle de compra (tabla) -->
         {form_data.get('cart_table_html', '')}
         <hr>
-        <p>Este es un mensaje automático generado por el sistema de pedidos de Anyalua regalos &amp; detalles. Se enviará una foto por whatsapp antes del envio. Si desea comunicarse con el ventas porfavor contactenos via whatsapp 923259431  912983559</p>
+        <p><strong>Subtotal:</strong> S/ {form_data.get('cart_subtotal')}</p>
+        <p><strong>Gastos de Envío:</strong> S/ {form_data.get('shipping_cost')}</p>
+        <p><strong>Descuento por Cupón:</strong> - S/ {discount_str}</p>
+        <p><strong>Total:</strong> S/ {form_data.get('total')}</p>
+        <hr>
+        <p>Este es un mensaje automático generado por el sistema de pedidos de Anyalua regalos &amp; detalles. Se enviará una foto por WhatsApp antes del envío. Si desea comunicarse con ventas, contáctenos vía WhatsApp: 923259431 / 912983559</p>
         <p>
           <a href="{mailto_link}" class="button">Pago Verificado</a>
         </p>
@@ -131,21 +143,18 @@ def send_order_email(form_data):
             print("La imagen de la captura no existe en:", full_captura_path)
     
     # Opcional: Adjuntar las imágenes de los productos si se incluyen en form_data['cart_items']
-    # Se utilizará la carpeta "static/imagenes_extraidas" para estas imágenes.
+    # Usar la carpeta "static/imagenes_extraidas" para estas imágenes.
     cart_items = form_data.get('cart_items', [])
-    # Construir la ruta base usando el directorio actual del archivo send_order_email.py
     base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'imagenes_extraidas')
     for item in cart_items:
         image_filename = item.get('imagen')
         if image_filename:
-            # Construir la ruta completa de la imagen
             full_image_path = os.path.join(base_dir, image_filename)
             if os.path.exists(full_image_path):
                 try:
                     with open(full_image_path, 'rb') as f:
                         prod_img_data = f.read()
                     prod_img_mime = MIMEImage(prod_img_data)
-                    # Generar un Content-ID único (por ejemplo, usando el nombre de la imagen)
                     cid = f"<{image_filename}>"
                     prod_img_mime.add_header('Content-ID', cid)
                     prod_img_mime.add_header('Content-Disposition', 'attachment', filename=image_filename)
@@ -168,7 +177,6 @@ def send_order_email(form_data):
     except Exception as e:
         print("Error al enviar el correo a operadores:", e)
     
-    # -----------------------------------------------
     # Enviar acuse de recibo al cliente
     client_email = form_data.get('correo_cliente')
     if client_email:
@@ -201,10 +209,12 @@ def send_order_email(form_data):
         <p><strong>Nombre de la Persona que Recibe:</strong> {form_data.get('nombre_receptor')}</p>
         <p><strong>Teléfono de la Persona que Recibe:</strong> {form_data.get('telefono_receptor')}</p>
         <p><strong>Dirección de Envío:</strong> {form_data.get('direccion_envio')}</p>
-        <p><strong>Fecha de Envío:</strong> {form_data.get('fecha_envio')}</p>
+        <p><strong>Fecha y Hora de Envío:</strong> {form_data.get('fecha_envio')}</p>
         <p><strong>Captura Yape:</strong> {form_data.get('captura_yape')}</p>
         <hr>
-        <p>Este es un mensaje automático generado por el sistema de pedidos de Anyalua regalos &amp; detalles.</p>        
+        {form_data.get('cart_table_html', '')}
+        <hr>
+        <p>Este es un mensaje automático generado por el sistema de pedidos de Anyalua regalos &amp; detalles. Se enviará una foto por WhatsApp antes del envío. Si desea comunicarse con ventas, contáctenos vía WhatsApp: 923259431 / 912983559</p>
       </body>
     </html>
     """
@@ -214,7 +224,6 @@ def send_order_email(form_data):
         msg_client['Subject'] = client_subject
         msg_client.attach(MIMEText(client_html, 'html', 'utf-8'))
     
-        # Adjuntar la imagen (captura del Yape) para el cliente
         if captura_path:
             full_captura_path = obtener_ruta_imagen(captura_path)
             if os.path.exists(full_captura_path):
@@ -255,10 +264,9 @@ if __name__ == "__main__":
         'nombre_receptor': 'María López',
         'telefono_receptor': '987654321',
         'direccion_envio': 'Av. Siempre Viva 123',
-        'fecha_envio': '2025-02-07',
+        'fecha_envio': '2025-02-07T12:00',
         'captura_yape': 'captura_yape.jpg',
         'captura_yape_path': 'captura_yape.jpg',
-        # Para pruebas, incluir una lista de productos:
         'cart_items': [
             {
                 'imagen': 'producto1.jpg',
@@ -279,8 +287,8 @@ if __name__ == "__main__":
         ],
         'cart_subtotal': 35.0,
         'shipping_cost': 15.0,
-        'coupon_discount': 0.0,
-        'total': 50.0
+        'coupon_discount': 3.5,  # Por ejemplo, 10% de descuento sobre 35 = 3.5
+        'total': 46.5
     }
     order_code = send_order_email(form_data)
     print("Código de pedido:", order_code)

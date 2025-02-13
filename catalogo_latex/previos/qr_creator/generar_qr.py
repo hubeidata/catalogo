@@ -3,7 +3,7 @@ from PIL import Image
 
 def main():
     # URL que se codificará en el QR
-    url = "www.anyalua.com"
+    url = "958206357"
     
     # Crear el código QR con alta corrección de errores
     qr = qrcode.QRCode(

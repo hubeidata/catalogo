@@ -89,7 +89,7 @@ def send_order_email(form_data):
         <!-- Se puede incluir el detalle de compra (tabla) -->
         {form_data.get('cart_table_html', '')}
         <hr>
-        <p>Este es un mensaje automático generado por el sistema de pedidos de Anyalua regalos &amp; detalles.</p>
+        <p>Este es un mensaje automático generado por el sistema de pedidos de Anyalua regalos &amp; detalles. Se enviará una foto por whatsapp antes del envio. Si desea comunicarse con el ventas porfavor contactenos via whatsapp 923259431  912983559</p>
         <p>
           <a href="{mailto_link}" class="button">Pago Verificado</a>
         </p>

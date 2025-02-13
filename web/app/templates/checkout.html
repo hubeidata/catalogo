@@ -200,11 +200,11 @@
           const couponCode = couponInput.value.trim().toUpperCase();
           const shippingCost = parseFloat(document.getElementById('shippingCost').textContent);
           if (couponCode === "VALENTIN25") {
-            window.currentCouponDiscount = shippingCost * 0.25;
-            alert("Cupón VALENTIN25 aplicado: 25% de descuento en envío");
+            window.currentCouponDiscount = shippingCost * 1;
+            alert("Cupón VALENTIN25 aplicado: 100% de descuento en envío");
           } else if (couponCode === "ANYALUA442") {
-            window.currentCouponDiscount = shippingCost * 0.15;
-            alert("Cupón ANYALUA442 aplicado: 15% de descuento en envío");
+            window.currentCouponDiscount = shippingCost * 1;
+            alert("Cupón ANYALUA442 aplicado: 100% de descuento en envío");
           } else {
             alert("Código de cupón no válido");
             window.currentCouponDiscount = 0;

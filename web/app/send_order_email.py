@@ -83,7 +83,7 @@ def send_order_email(form_data):
         <p><strong>Nombre de la Persona que Recibe:</strong> {form_data.get('nombre_receptor')}</p>
         <p><strong>Teléfono de la Persona que Recibe:</strong> {form_data.get('telefono_receptor')}</p>
         <p><strong>Dirección de Envío:</strong> {form_data.get('direccion_envio')}</p>
-        <p><strong>Fecha de Envío:</strong> {form_data.get('fecha_envio')}</p>
+        <p><strong>Fecha y Hora de Envío:</strong> {form_data.get('fecha_envio')}</p>
         <p><strong>Captura Yape:</strong> {form_data.get('captura_yape')}</p>
         <hr>
         <!-- Se puede incluir el detalle de compra (tabla) -->

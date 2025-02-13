@@ -4,7 +4,7 @@
   <h1 class="text-center romantic">Confirmación de Pago y Envío</h1>
   <form method="post" enctype="multipart/form-data" id="checkoutForm">
     <div class="row">
-      <!-- Columna Izquierda: Datos del cliente y envío -->
+      <!-- Columna Izquierda: Datos del Cliente y Envío -->
       <div class="col-md-6">
         <!-- Código de Transacción con icono de ayuda -->
         <div class="mb-3">
@@ -46,6 +46,7 @@
           <label for="direccion_envio" class="form-label">Dirección de Envío</label>
           <textarea class="form-control" id="direccion_envio" name="direccion_envio" rows="2" required></textarea>
         </div>
+        <!-- Campo de Fecha y Hora de Envío (datetime-local) -->
         <div class="mb-3">
           <label for="fecha_envio" class="form-label">Fecha y Hora de Envío</label>
           <input type="datetime-local" class="form-control" id="fecha_envio" name="fecha_envio" value="{{ fecha_envio_value }}" min="{{ fecha_envio_value }}" required>
@@ -55,7 +56,7 @@
           <input type="file" class="form-control" id="captura_yape" name="captura_yape" accept="image/*" required>
         </div>
       </div>
-      <!-- Columna Derecha: Opciones de Pago y Resumen del Pedido -->
+      <!-- Columna Derecha: Opciones de Pago, Cupón y Resumen del Pedido -->
       <div class="col-md-6">
         <!-- Opciones de Pago -->
         <div class="mb-3">
@@ -78,10 +79,10 @@
             <button id="closeTarjeta" type="button" class="btn btn-secondary btn-sm mt-2">Cerrar</button>
           </div>
         </div>
-        <!-- Cupón de Descuento -->
+        <!-- Cupón de Descuento: Único campo y botón para autocompletar -->
         <div class="mb-3">
           <label for="coupon_code" class="form-label">Código de Descuento</label>
-          <input type="text" class="form-control" id="coupon_code" name="coupon_code" placeholder="Ingrese cupón (opcional)">
+          <input type="text" class="form-control" id="coupon_code" name="coupon" placeholder="Ingrese cupón (opcional)">
           <button type="button" id="applyCoupon" class="btn btn-danger mt-2">Aplicar descuento</button>
         </div>
         <!-- Resumen del Pedido -->
@@ -95,13 +96,15 @@
             <li class="list-group-item d-flex justify-content-between">
               <span>Gastos de Envío</span>
               <strong>S/ <span id="shippingCost">{{ shipping_cost | round(2) }}</span></strong>
-              <!-- Campo oculto para enviar el gasto de envío actualizado al servidor -->
               <input type="hidden" id="hidden_shipping_cost" name="shipping_cost" value="{{ shipping_cost }}">
             </li>
-            <li class="list-group-item d-flex justify-content-between" id="couponDiscountContainer" style="display: {% if coupon_discount and coupon_discount > 0 %}flex{% else %}none{% endif %};">
+            {% if coupon_discount and coupon_discount > 0 %}
+            <li class="list-group-item d-flex justify-content-between" id="couponDiscountContainer">
               <span>Descuento por Cupón</span>
-              <strong style="color: red;">- S/ <span id="couponDiscount">{{ coupon_discount | round(2) if coupon_discount else '0.00' }}</span></strong>
+              <strong style="color: red;">- S/ <span id="couponDiscount">{{ coupon_discount | round(2) }}</span></strong>
+              <input type="hidden" id="hidden_coupon_discount" name="coupon_discount" value="{{ coupon_discount }}">
             </li>
+            {% endif %}
             <li class="list-group-item d-flex justify-content-between">
               <span>Total</span>
               <strong>S/ <span id="resumenTotal">{{ total | round(2) }}</span></strong>
@@ -113,7 +116,7 @@
     </div>
   </form>
 
-  <!-- Overlay de carga: se muestra después de enviar el formulario para impedir la interacción -->
+  <!-- Overlay de carga: se muestra al enviar el formulario -->
   <div id="loadingOverlay">
     <div class="spinner-border text-light" role="status">
       <span class="sr-only">Cargando...</span>
@@ -125,7 +128,7 @@
   <style>
     /* Estilos para el overlay de carga */
     #loadingOverlay {
-      display: none;  /* Oculto por defecto */
+      display: none;
       position: fixed;
       top: 0;
       left: 0;
@@ -140,46 +143,16 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const fechaEnvioInput = document.getElementById('fecha_envio');
-      fechaEnvioInput.addEventListener('change', function() {
-        const datetime = this.value; // Formato: "YYYY-MM-DDTHH:MM"
-        if (datetime) {
-          const parts = datetime.split("T");
-          if(parts.length === 2) {
-            const timePart = parts[1];
-            const hour = parseInt(timePart.split(":")[0]);
-            if (hour < 9) {
-              alert("La hora mínima de envío es 09:00.");
-              this.value = parts[0] + "T09:00";
-            } else if (hour > 18) {
-              alert("La hora máxima de envío es 18:00.");
-              this.value = parts[0] + "T18:00";
-            }
-          }
-        }
-      });
-    });
-  </script>
-
-  <script>
-    // Declaramos la variable global para el descuento del cupón
-    window.currentCouponDiscount = 0;
-
-    document.addEventListener('DOMContentLoaded', function() {
       // --- Ayuda para el Código de Transacción ---
       const helpIcon = document.getElementById('helpIcon');
       if (helpIcon) {
         helpIcon.addEventListener('click', function() {
           const helpImageContainer = document.getElementById('helpImageContainer');
-          if (helpImageContainer.style.display === 'none' || helpImageContainer.style.display === '') {
-            helpImageContainer.style.display = 'block';
-          } else {
-            helpImageContainer.style.display = 'none';
-          }
+          helpImageContainer.style.display = (helpImageContainer.style.display === 'none' || helpImageContainer.style.display === '') ? 'block' : 'none';
         });
       }
 
-      // --- Métodos de Pago y Cupón ---
+      // --- Métodos de Pago ---
       const pagoYapeRadio = document.getElementById('pagoYape');
       const qrContainer = document.getElementById('qrContainer');
       const closeQR = document.getElementById('closeQR');
@@ -193,59 +166,80 @@
           mensajeTarjeta.style.display = 'none';
         });
       }
-
       if (pagoTarjetaRadio) {
         pagoTarjetaRadio.addEventListener('click', function() {
           mensajeTarjeta.style.display = 'block';
           qrContainer.style.display = 'none';
         });
       }
-
       if (closeQR) {
         closeQR.addEventListener('click', function() {
           qrContainer.style.display = 'none';
           pagoYapeRadio.checked = false;
         });
       }
-
       if (closeTarjeta) {
         closeTarjeta.addEventListener('click', function() {
           mensajeTarjeta.style.display = 'none';
           pagoTarjetaRadio.checked = false;
         });
       }
-
-      // --- Cupón de Descuento ---
+      
+      // --- Botón Aplicar Descuento ---
       const applyCouponBtn = document.getElementById('applyCoupon');
       if (applyCouponBtn) {
         applyCouponBtn.addEventListener('click', function() {
-          const couponInput = document.getElementById('coupon_code');
-          const couponCode = couponInput.value.trim().toUpperCase();
+          // Autocompleta el campo con el cupón ANYALUA442
+          document.getElementById('coupon_code').value = "ANYALUA442";
+          // Se aplica el descuento del 100% al monto de delivery:
           const shippingCost = parseFloat(document.getElementById('shippingCost').textContent);
-          if (couponCode === "VALENTIN25") {
-            window.currentCouponDiscount = shippingCost * 1;
-            alert("Cupón VALENTIN25 aplicado: 100% de descuento en envío");
-          } else if (couponCode === "ANYALUA442") {
-            window.currentCouponDiscount = shippingCost * 1;
-            alert("Cupón ANYALUA442 aplicado: 100% de descuento en envío");
-          } else {
-            alert("Código de cupón no válido");
-            window.currentCouponDiscount = 0;
+          const discount = shippingCost.toFixed(2); // 100% de descuento
+          // Actualizar el texto del descuento y mostrarlo
+          let couponDiscountContainer = document.getElementById('couponDiscountContainer');
+          if (!couponDiscountContainer) {
+            // Si no existe, creamos el contenedor dinámicamente (opcional)
+            couponDiscountContainer = document.createElement('li');
+            couponDiscountContainer.className = "list-group-item d-flex justify-content-between";
+            couponDiscountContainer.id = "couponDiscountContainer";
+            couponDiscountContainer.innerHTML = '<span>Descuento por Cupón</span><strong style="color: red;">- S/ <span id="couponDiscount"></span></strong>';
+            document.querySelector('.list-group').appendChild(couponDiscountContainer);
           }
-          document.getElementById('couponDiscount').textContent = window.currentCouponDiscount.toFixed(2);
-          document.getElementById('couponDiscountContainer').style.display = (window.currentCouponDiscount > 0) ? 'flex' : 'none';
-          updateTotal();
+          document.getElementById('couponDiscount').textContent = discount;
+          couponDiscountContainer.style.display = 'flex';
+          // Actualizar el campo oculto para enviar el descuento al servidor
+          const hiddenCouponDiscount = document.getElementById('hidden_coupon_discount');
+          if (hiddenCouponDiscount) {
+            hiddenCouponDiscount.value = discount;
+          }
+          // Actualizar el total: en este caso se descuenta el total del delivery
+          const subtotal = parseFloat(document.getElementById('resumenSubtotal').textContent);
+          const newTotal = (subtotal + 0).toFixed(2); // delivery se vuelve 0
+          document.getElementById('resumenTotal').textContent = newTotal;
+          alert("Cupón ANYALUA442 aplicado: ¡Envío gratuito!");
         });
       }
-
-      function updateTotal() {
-        const subtotal = parseFloat(document.getElementById('resumenSubtotal').textContent);
-        const shippingCost = parseFloat(document.getElementById('shippingCost').textContent);
-        const newTotal = (subtotal + shippingCost - window.currentCouponDiscount).toFixed(2);
-        document.getElementById('resumenTotal').textContent = newTotal;
-      }
       
-      // Agregar evento al formulario para mostrar el overlay de carga
+      // Validar que la hora seleccionada esté entre 09:00 y 18:00
+      const fechaEnvioInput = document.getElementById('fecha_envio');
+      fechaEnvioInput.addEventListener('change', function() {
+        const datetime = this.value; // Formato: "YYYY-MM-DDTHH:MM"
+        if (datetime) {
+          const parts = datetime.split("T");
+          if (parts.length === 2) {
+            const timePart = parts[1];
+            const hour = parseInt(timePart.split(":")[0]);
+            if (hour < 9) {
+              alert("La hora mínima de envío es 09:00.");
+              this.value = parts[0] + "T09:00";
+            } else if (hour > 18) {
+              alert("La hora máxima de envío es 18:00.");
+              this.value = parts[0] + "T18:00";
+            }
+          }
+        }
+      });
+      
+      // Mostrar overlay de carga al enviar el formulario
       const checkoutForm = document.getElementById("checkoutForm");
       checkoutForm.addEventListener("submit", function() {
         document.getElementById("loadingOverlay").style.display = "flex";
@@ -285,8 +279,10 @@
                 // Actualizamos tanto el span visible como el campo oculto
                 document.getElementById("shippingCost").textContent = newShippingCost;
                 document.getElementById("hidden_shipping_cost").value = newShippingCost;
+                // Actualizamos el total, restando el descuento almacenado (si lo hubiere)
                 const subtotal = parseFloat(document.getElementById('resumenSubtotal').textContent);
-                const newTotal = (subtotal + parseFloat(newShippingCost) - window.currentCouponDiscount).toFixed(2);
+                const couponDiscount = parseFloat(document.getElementById('hidden_coupon_discount') ? document.getElementById('hidden_coupon_discount').value : 0);
+                const newTotal = (subtotal + parseFloat(newShippingCost) - couponDiscount).toFixed(2);
                 document.getElementById('resumenTotal').textContent = newTotal;
                 const locationLink = "https://www.google.com/maps?q=" + selectedLatLng.lat() + "," + selectedLatLng.lng();
                 const ubicacionInput = document.getElementById("ubicacion_envio");

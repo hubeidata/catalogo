@@ -138,7 +138,6 @@ def add_to_cart(codigo):
 @app.route('/update_cart', methods=['POST'])
 def update_cart():
     cart = session.get('cart', [])
-    # Si se ha enviado el botón "remove", eliminar el producto
     if 'remove' in request.form:
         codigo_a_eliminar = request.form['remove']
         updated_cart = [item for item in cart if item.get('codigo') != codigo_a_eliminar]
@@ -146,7 +145,6 @@ def update_cart():
         flash("Producto eliminado del carrito.")
         return redirect(url_for('carrito'))
     
-    # Si se ha enviado el formulario de actualización, procesar cantidades y cupón
     updated_cart = []
     for item in cart:
         codigo = item['codigo']
@@ -162,12 +160,12 @@ def update_cart():
         updated_cart.append(item)
     session['cart'] = updated_cart
 
-    # Procesar cupón de descuento (opcional)
+    # Validar cupón únicamente en el servidor
     coupon = request.form.get('coupon', '').strip()
     if coupon:
-        if coupon == "DESCUENTO10":
-            flash("Cupón aplicado: 10% de descuento")
-            session['coupon'] = coupon
+        if coupon.upper() == "ANYALUA442":
+            flash("Cupón aplicado: descuento por ANYALUA442")
+            session['coupon'] = coupon.upper()
         else:
             flash("Cupón inválido")
             session.pop('coupon', None)
@@ -177,15 +175,15 @@ def update_cart():
     flash("Carrito actualizado.")
     return redirect(url_for('carrito'))
 
-@app.route('/carrito')
+
 @app.route('/carrito')
 def carrito():
     cart_items = obtener_productos_del_carrito()  # Retorna la lista de productos con claves: 'product_code', 'image', 'product_name', 'unit_price', 'quantity'
     cart_subtotal = sum(item['subtotal'] for item in cart_items)
     shipping_cost = calcular_gastos(cart_items)
     coupon_discount = 0
-    if 'coupon' in session and session['coupon'] == "DESCUENTO10":
-        coupon_discount = cart_subtotal * 0.10
+    if 'coupon' in session and session['coupon'] == "ANYALUA442":
+        coupon_discount = shipping_cost  # Descuento del 100% sobre el envío
     total = cart_subtotal + shipping_cost - coupon_discount
     return render_template('carrito.html',
                            cart_items=cart_items,
@@ -200,7 +198,6 @@ def confirm_payment():
 @app.route('/checkout', methods=['GET', 'POST'])
 def checkout():
     if request.method == 'POST':
-        # Recopilar datos del formulario
         data = {
             'codigo_transaccion': request.form['codigo_transaccion'],
             'nombre_cliente': request.form['nombre_cliente'],
@@ -214,7 +211,7 @@ def checkout():
             'captura_yape': request.files['captura_yape'].filename
         }
         
-        # Guardar la imagen subida en la carpeta static/uploads/
+        # Guardar la imagen en static/uploads/
         upload_folder = os.path.join('static', 'uploads')
         if not os.path.exists(upload_folder):
             os.makedirs(upload_folder)
@@ -222,27 +219,31 @@ def checkout():
         filename = file.filename
         filepath = os.path.join(upload_folder, filename)
         file.save(filepath)
-        data['captura_yape_path'] = filename  # Se guarda la ruta relativa
+        data['captura_yape_path'] = filename
         
-        # Obtener los productos del carrito
+        # Leer el cupón ingresado y validar en el servidor (únicamente ANYALUA442 es válido)
+        coupon = request.form.get('coupon', '').strip()
+        if coupon.upper() == "ANYALUA442":
+            session['coupon'] = "ANYALUA442"
+        else:
+            session.pop('coupon', None)
+        
+        # Obtener productos del carrito y calcular totales
         cart_items = obtener_productos_del_carrito()
         cart_subtotal = sum(item['subtotal'] for item in cart_items)
         
-        # Leer el gasto de envío actualizado desde el campo oculto del formulario.
-        # Este valor se actualiza en el cliente con JavaScript al mover el marcador.
         try:
             shipping_cost = float(request.form.get('shipping_cost', 0))
         except ValueError:
             shipping_cost = 0.0
-
-        # Procesar cupón (por ejemplo, "DESCUENTO10")
+        
+        # Aplicar descuento: si el cupón ANYALUA442 está en sesión, se descuenta el 100% del gasto de envío
         coupon_discount = 0
-        if 'coupon' in session and session['coupon'] == "DESCUENTO10":
-            coupon_discount = cart_subtotal * 0.10
-
+        if 'coupon' in session and session['coupon'] == "ANYALUA442":
+            coupon_discount = shipping_cost
+        
         total = cart_subtotal + shipping_cost - coupon_discount
 
-        # Renderizar el fragmento HTML (cart_table_html) para incluirlo en el correo a los operadores
         cart_table_html = render_template('cart_table_html.html',
                                           cart_items=cart_items,
                                           cart_subtotal=cart_subtotal,
@@ -250,30 +251,26 @@ def checkout():
                                           coupon_discount=coupon_discount,
                                           total=total)
 
-        # Agregar los totales y el fragmento HTML al diccionario de datos para el correo
         data['cart_table_html'] = cart_table_html
         data['cart_subtotal'] = cart_subtotal
         data['shipping_cost'] = shipping_cost
         data['coupon_discount'] = coupon_discount
         data['total'] = total
 
-        # Enviar el correo de pedido a los operadores (la función send_order_email usa estos datos)
         from send_order_email import send_order_email
         order_code = send_order_email(data)
-        
-        # Enviar acuse de recibo al cliente (código omitido para brevedad)
-        flash("¡Pedido realizado con éxito!")
-        session.pop('cart', None)   # Limpiar el carrito
+
+        flash("¡Pedido realizado con éxito! Revise su correo: " + data.get('correo_cliente'))
+        session.pop('cart', None)
         session.pop('coupon', None)
         return redirect(url_for('index'))
     else:
-        # Para GET: calcular totales y mostrar el formulario de checkout
         cart_items = obtener_productos_del_carrito()
         cart_subtotal = sum(item['subtotal'] for item in cart_items)
-        shipping_cost = calcular_gastos(cart_items)
+        shipping_cost = calcular_gastos(cart_items)  # Asegúrate de que esta función retorne un valor > 0 (por ejemplo, 15.00)
         coupon_discount = 0
-        if 'coupon' in session and session['coupon'] == "DESCUENTO10":
-            coupon_discount = cart_subtotal * 0.10
+        if 'coupon' in session and session['coupon'] == "ANYALUA442":
+            coupon_discount = shipping_cost
         total = cart_subtotal + shipping_cost - coupon_discount
         fecha_envio_value = datetime.now().strftime("%Y-%m-%dT%H:%M")
         return render_template('checkout.html',
@@ -283,6 +280,7 @@ def checkout():
                                coupon_discount=coupon_discount,
                                total=total,
                                fecha_envio_value=fecha_envio_value)
+
 
 @app.route('/remove_from_cart/<codigo>', methods=['POST'])
 def remove_from_cart(codigo):

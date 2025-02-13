@@ -89,9 +89,10 @@ def calcular_gastos(cart_items):
     si hay al menos un producto en el carrito; si el carrito está vacío, el costo es 0.
     Puedes ajustar la lógica para que dependa del peso, la distancia u otros parámetros.
     """
-    if cart_items:
+    def calcular_gastos(cart_items):
+        if cart_items:
+            return 15.00
         return 0.00
-    return 0.00
 
 # ======================================================
 # Rutas de la aplicación

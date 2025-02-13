@@ -18,6 +18,15 @@
   </style>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <!-- Favicon y Apple Touch Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='favicon_io/apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='favicon_io/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon_io/favicon-16x16.png') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon_io/favicon.ico') }}">
+    
+  <!-- Manifest para PWA -->
+  <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -51,5 +60,26 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   {% block scripts %}{% endblock %}
+   <!-- Footer -->
+   <footer class="bg-light py-4">
+    <div class="container">
+      <div class="row align-items-center">
+        <!-- Columna izquierda con el logo -->
+        <div class="col-12 col-md-6 text-center text-md-left mb-3 mb-md-0">
+          <img src="{{ url_for('static', filename='imagenes/logo_anyalua.jpeg') }}" alt="Logo Anyalua" class="img-fluid" style="max-width: 150px;">
+        </div>
+        <!-- Columna derecha con el texto -->
+        <div class="col-12 col-md-6 text-center text-md-right">
+          <p class="mb-0">
+            Anyalua Detalles y Regalos es una colaboración de Anyalua y HubeiData desde 2018 con depacho delivery en la Ciudad de Arequipa.
+          </p>
+          <p class="mb-0">
+            Whatsapp de ventas 923259431  912983559.
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
 </body>
 </html>

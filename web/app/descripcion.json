@@ -1,4 +1,102 @@
 {
+  "floral_love": [
+    {
+      "nombre": "Box Flores Amor",
+      "descripcion": "Box Flores Amor: Una hermosa y romántica combinación de 4 rosas fucsias, 1 rosa roja y 2 rosas blancas, presentadas en una elegante caja. Acompañado de un tierno peluche de osito, un globito con la frase Te Amo y 3 deliciosos chocolates Ferrero Rocher, este arreglo es el detalle perfecto para expresar amor y ternura.",
+      "precio": 118,
+      "imagen": "imagenes_extraidas/box_osito",
+      "codigo": "BFA1"
+    },
+    {
+      "nombre": "Box Girasol Negro",
+      "descripcion": "Box Girasol Negro: Un impactante arreglo que combina la energía y alegría de 7 girasoles seleccionados con un follaje premium, realzado por un elegante box negro que aporta un toque de sofisticación. Incluye un topper dedicatoria para hacer de este detalle un regalo único y especial.",
+      "precio": 118,
+      "imagen": "imagenes_extraidas/box_negro",
+      "codigo": "BGN"
+    },
+    {
+      "nombre": "Floral Rojo",
+      "descripcion": "Floral Rojo: Un elegante y vibrante arreglo que combina la pasión de 5 rosas rojas con la pureza de 3 rosas blancas. Complementado con delicadas astromelias rojas, exuberantes hortensias rojas y un selecto follaje en tonos verdes y rojos premium, este diseño es perfecto para expresar amor, admiración y sofisticación.",
+      "precio": 115,
+      "imagen": "imagenes_extraidas/box_plomo",
+      "codigo": "FRP1"
+    },
+    {
+      "nombre": "Canasta Floral Blanco",
+      "descripcion": "Canasta Floral: Un elegante arreglo que combina 5 imponentes rosas rojas y 4 delicados claveles blancos, complementados con follaje verde para un toque natural. Presentado en una sofisticada canasta disponible en color negro o blanco, adornada con un listón rojo que realza su belleza. Perfecto para sorprender con un detalle clásico y distinguido.",
+      "precio": 88,
+      "imagen": "imagenes_extraidas/cartera_blanco",
+      "codigo": "CFB"
+    },
+    {
+      "nombre": "Canasta Floral Negro",
+      "descripcion": "Canasta Floral: Un elegante arreglo que combina 5 imponentes rosas rojas y 4 delicados claveles blancos, complementados con follaje verde para un toque natural. Presentado en una sofisticada canasta disponible en color negro o blanco, adornada con un listón rojo que realza su belleza. Perfecto para sorprender con un detalle clásico y distinguido.",
+      "precio": 88,
+      "imagen": "imagenes_extraidas/cartera_negra",
+      "codigo": "CFN"
+    }
+    
+  ],
+  "ramo_diseño": [
+    {
+      "nombre": "Bouquet Coreano",
+      "descripcion": "Bouquet Coreano: Arreglo con 10 rosas rojas, follaje verde, envuelto en papel de diseño y decorado con listón negro.",
+      "precio": 120,
+      "imagen": "imagenes_extraidas/coreano",
+      "codigo": "TRM"
+    },
+    {
+      "nombre": "Astromelia Rosadas rojas",
+      "descripcion": "Astromelia Rosadas/Rojas: Ramo con astromelias en tonos rosados o rojos (a elección), envuelto en papel coreano estilo periódico y decorado con listón blanco.",
+      "precio": 55,
+      "imagen": "imagenes_extraidas/astromelia",
+      "codigo": "ASTR1"
+    },
+    {
+      "nombre": "Duo Rosas",
+      "descripcion": "Duo Rosas: Ramo con 9 rosas (5 rojas y 4 rosadas), follaje verde, envuelto en papel coreano rosado y decorado con listón transparente.",
+      "precio": 95,
+      "imagen": "imagenes_extraidas/mini_cono_tres_rosas",
+      "codigo": "MC3RC"
+    },
+    {
+      "nombre": "Ramo Happy",
+      "descripcion": "Ramo Happy: Arreglo con 1 rosa roja, astromelias cremas, cono decorativo con listón y tarjeta dedicatoria.",
+      "precio": 95,
+      "imagen": "imagenes_extraidas/mucho_amor",
+      "codigo": "RHA1"
+    },
+    {
+      "nombre": "Ramo Happy Negro",
+      "descripcion": "Ramo Happy Negro: Elegante ramo con rosas rojas frescas, acompañadas de follaje verde. Envuelto en papel negro con detalles de corazones y un diseño temático con ilustraciones románticas. Decorado con un llamativo listón rojo para un toque especial.",
+      "precio": 95,
+      "imagen": "imagenes_extraidas/negro",
+      "codigo": "RHA01"
+    }
+  ],
+    "mini_ramo_especial": [
+      {
+        "nombre": "Trio de Rosas",
+        "descripcion": "Ramo con 3 rosas (rosada, fucsia y lila), follaje verde, cono decorativo con listón, tarjeta dedicatoria y chocolates Ferrero Rocher.",
+        "precio": 45,
+        "imagen": "imagenes_extraidas/mini_corazon_rojo",
+        "codigo": "T3RM"
+      },
+      {
+        "nombre": "Conito Melon",
+        "descripcion": "Conito Melón: Ramo con 3 rosas rosadas, follaje verde, 3 chocolates Ferrero Rocher, cono decorativo con listón y tarjeta dedicatoria.",
+        "precio": 45,
+        "imagen": "imagenes_extraidas/mini_cono_tres_melon",
+        "codigo": "CME1"
+      },
+      {
+        "nombre": "Conito Rojo",
+        "descripcion": "Conito Rojo: Ramo con 3 rosas rojas, follaje verde, globito en forma de corazón rojo, cono decorativo con listón y tarjeta dedicatoria.",
+        "precio": 45,
+        "imagen": "imagenes_extraidas/mini_cono_tres_rosas",
+        "codigo": "MC3RC2"
+      }
+    ],
     "love_boxes": [
       {
         "nombre": "Dos Ositos",
@@ -70,53 +168,7 @@
         "imagen": "imagenes_extraidas/te_quiero",
         "codigo": "TQ01"
       }
-    ],
-    "tulipanes_en_caja": [
-      {
-        "nombre": "12 tulipanes",
-        "descripcion": "Tulipanes capullo premium en caja y follaje decorativo",
-        "precio": 150,
-        "imagen": "imagenes_extraidas/image_2_3",
-        "codigo": "TU1"
-      },
-      {
-        "nombre": "6 tulipanes",
-        "descripcion": "Tulipanes capullo premium en caja y follaje decorativo",
-        "precio": 100,
-        "imagen": "imagenes_extraidas/image_2_4",
-        "codigo": "TU2"
-      },
-      {
-        "nombre": "6 tulipanes",
-        "descripcion": "Tulipanes capullo premium en caja y follaje decorativo",
-        "precio": 60,
-        "imagen": "imagenes_extraidas/image_2_5",
-        "codigo": "TU3"
-      }
-    ],
-    "rosas_en_caja": [
-      {
-        "nombre": "12 rosas rojas",
-        "descripcion": "Rosas rojas premium en caja, ideal para regalo",
-        "precio": 110,
-        "imagen": "imagenes_extraidas/image_5_3",
-        "codigo": "RO1"
-      },
-      {
-        "nombre": "6 rosas rojas",
-        "descripcion": "6 rosas rojas en caja, un detalle especial",
-        "precio": 100,
-        "imagen": "imagenes_extraidas/image_5_4",
-        "codigo": "RO2"
-      },
-      {
-        "nombre": "3 rosas rojas",
-        "descripcion": "6 rosas rojas en caja, un detalle especial",
-        "precio": 50,
-        "imagen": "imagenes_extraidas/image_5_5",
-        "codigo": "RO3"
-      }
-    ],
+    ], 
     "ramo_de_rosas": [
       {
         "nombre": "12 rosas rojas",

@@ -275,14 +275,14 @@ def checkout():
         if 'coupon' in session and session['coupon'] == "DESCUENTO10":
             coupon_discount = cart_subtotal * 0.10
         total = cart_subtotal + shipping_cost - coupon_discount
-        fecha_hoy = datetime.today().strftime("%Y-%m-%d")
+        fecha_envio_value = datetime.now().strftime("%Y-%m-%dT%H:%M")
         return render_template('checkout.html',
                                cart_items=cart_items,
                                cart_subtotal=cart_subtotal,
                                shipping_cost=shipping_cost,
                                coupon_discount=coupon_discount,
                                total=total,
-                               fecha_hoy=fecha_hoy)
+                               fecha_envio_value=fecha_envio_value)
 
 @app.route('/remove_from_cart/<codigo>', methods=['POST'])
 def remove_from_cart(codigo):

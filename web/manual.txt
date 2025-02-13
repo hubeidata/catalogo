@@ -12,3 +12,10 @@ git fetch origin
 git checkout construccion
 git merge b38c213
 git push origin construccion
+
+crear pull request para paso a produccion
+
+cuando se hacen cambios en el docker-compose.yml
+docker-compose up -d --build
+pagina de tocken maps
+https://console.cloud.google.com/apis/credentials?project=anyalua&inv=1&invt=AbpR8g

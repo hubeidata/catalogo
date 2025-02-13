@@ -47,8 +47,8 @@
           <textarea class="form-control" id="direccion_envio" name="direccion_envio" rows="2" required></textarea>
         </div>
         <div class="mb-3">
-          <label for="fecha_envio" class="form-label">Fecha de Envío</label>
-          <input type="date" class="form-control" id="fecha_envio" name="fecha_envio" value="{{ fecha_hoy }}" min="{{ fecha_hoy }}" required>
+          <label for="fecha_envio" class="form-label">Fecha y Hora de Envío</label>
+          <input type="datetime-local" class="form-control" id="fecha_envio" name="fecha_envio" value="{{ fecha_envio_value }}" min="{{ fecha_envio_value }}" required>
         </div>
         <div class="mb-3">
           <label for="captura_yape" class="form-label">Adjuntar Captura de Pantalla del Yape</label>
@@ -139,6 +139,29 @@
   </style>
 
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const fechaEnvioInput = document.getElementById('fecha_envio');
+      fechaEnvioInput.addEventListener('change', function() {
+        const datetime = this.value; // Formato: "YYYY-MM-DDTHH:MM"
+        if (datetime) {
+          const parts = datetime.split("T");
+          if(parts.length === 2) {
+            const timePart = parts[1];
+            const hour = parseInt(timePart.split(":")[0]);
+            if (hour < 9) {
+              alert("La hora mínima de envío es 09:00.");
+              this.value = parts[0] + "T09:00";
+            } else if (hour > 18) {
+              alert("La hora máxima de envío es 18:00.");
+              this.value = parts[0] + "T18:00";
+            }
+          }
+        }
+      });
+    });
+  </script>
+
+  <script>
     // Declaramos la variable global para el descuento del cupón
     window.currentCouponDiscount = 0;
 
@@ -200,11 +223,11 @@
           const couponCode = couponInput.value.trim().toUpperCase();
           const shippingCost = parseFloat(document.getElementById('shippingCost').textContent);
           if (couponCode === "VALENTIN25") {
-            window.currentCouponDiscount = shippingCost * 0.25;
-            alert("Cupón VALENTIN25 aplicado: 25% de descuento en envío");
+            window.currentCouponDiscount = shippingCost * 1;
+            alert("Cupón VALENTIN25 aplicado: 100% de descuento en envío");
           } else if (couponCode === "ANYALUA442") {
-            window.currentCouponDiscount = shippingCost * 0.15;
-            alert("Cupón ANYALUA442 aplicado: 15% de descuento en envío");
+            window.currentCouponDiscount = shippingCost * 1;
+            alert("Cupón ANYALUA442 aplicado: 100% de descuento en envío");
           } else {
             alert("Código de cupón no válido");
             window.currentCouponDiscount = 0;

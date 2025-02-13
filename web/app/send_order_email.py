@@ -83,13 +83,13 @@ def send_order_email(form_data):
         <p><strong>Nombre de la Persona que Recibe:</strong> {form_data.get('nombre_receptor')}</p>
         <p><strong>Teléfono de la Persona que Recibe:</strong> {form_data.get('telefono_receptor')}</p>
         <p><strong>Dirección de Envío:</strong> {form_data.get('direccion_envio')}</p>
-        <p><strong>Fecha de Envío:</strong> {form_data.get('fecha_envio')}</p>
+        <p><strong>Fecha y Hora de Envío:</strong> {form_data.get('fecha_envio')}</p>
         <p><strong>Captura Yape:</strong> {form_data.get('captura_yape')}</p>
         <hr>
         <!-- Se puede incluir el detalle de compra (tabla) -->
         {form_data.get('cart_table_html', '')}
         <hr>
-        <p>Este es un mensaje automático generado por el sistema de pedidos de Anyalua regalos &amp; detalles.</p>
+        <p>Este es un mensaje automático generado por el sistema de pedidos de Anyalua regalos &amp; detalles. Se enviará una foto por whatsapp antes del envio. Si desea comunicarse con el ventas porfavor contactenos via whatsapp 923259431  912983559</p>
         <p>
           <a href="{mailto_link}" class="button">Pago Verificado</a>
         </p>

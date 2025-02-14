@@ -56,16 +56,9 @@
       "nombre": "Duo Rosas",
       "descripcion": "Duo Rosas: Ramo con 9 rosas (5 rojas y 4 rosadas), follaje verde, envuelto en papel coreano rosado y decorado con listón transparente.",
       "precio": 95,
-      "imagen": "imagenes_extraidas/mini_cono_tres_rosas",
-      "codigo": "MC3RC"
-    },
-    {
-      "nombre": "Ramo Happy",
-      "descripcion": "Ramo Happy: Arreglo con 1 rosa roja, astromelias cremas, cono decorativo con listón y tarjeta dedicatoria.",
-      "precio": 95,
       "imagen": "imagenes_extraidas/mucho_amor",
-      "codigo": "RHA1"
-    },
+      "codigo": "MC3RC"
+    },    
     {
       "nombre": "Ramo Happy Negro",
       "descripcion": "Ramo Happy Negro: Elegante ramo con rosas rojas frescas, acompañadas de follaje verde. Envuelto en papel negro con detalles de corazones y un diseño temático con ilustraciones románticas. Decorado con un llamativo listón rojo para un toque especial.",
